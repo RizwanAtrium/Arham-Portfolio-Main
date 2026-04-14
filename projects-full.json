@@ -1,0 +1,453 @@
+{
+  "query": "*[_type == 'project'] | order(order asc){_id,title,'slug':slug.current,tag,image,'vision':{'title':visionTitle,'content':visionContent},'meta':{'role':role,'duration':duration,'team':team,'company':company},'customerProblem':{'title':customerProblemTitle,'content':customerProblemContent},'before':{'title':beforeTitle,'content':beforeContent,'image':beforeImage},'behavior':{'title':behaviorTitle,'content':behaviorContent,'highlights':behaviorHighlights},'after':{'title':afterTitle,'content':afterContent,'image':afterImage},'businessValue':{'title':businessValueTitle,'content':businessValueContent,'metrics':businessValueMetrics[]{value,label}},'futureState':{'title':futureStateTitle,'content':futureStateContent},order}",
+  "result": [
+    {
+      "_id": "LqXZlr5c7TWNkGYzJ9gtGa",
+      "after": {
+        "content": "Designers rapidly adopted the system, consuming components faster than anticipated. Development teams could reference a single source of truth. New applications launched with consistent experiences out of the box. The system became the foundation for multiple enterprise applications including Overtur and Access Management.",
+        "image": null,
+        "title": "After"
+      },
+      "before": {
+        "content": "Designers and developers worked in silos, recreating the same components differently each time. There was no shared language, no documentation, and no way to ensure consistency. The disconnect meant longer development cycles, inconsistent user experiences, and duplicated effort across every project.",
+        "image": null,
+        "title": "Before"
+      },
+      "behavior": {
+        "content": "As co-author of Project Phoenix (Allegion's design system), my partner and I studied what brands like IBM, Google, Shopify, and Salesforce were doing. We campaigned to leadership, making the case that design improves ROI. Using Brad Frost's atomic design methodology, we built the system from the ground up—starting with atoms (colors, typography, spacing), building to molecules (buttons, inputs, toggles), and scaling to organisms (navigation, forms, complex components).",
+        "highlights": [
+          "Researched and analyzed design systems from IBM Carbon, Shopify Polaris, and others",
+          "Established atomic structure: atoms → molecules → organisms",
+          "Created comprehensive token system for colors, typography, and spacing",
+          "Built component library covering all standard UI patterns",
+          "Developed documentation and usage guidelines",
+          "Soft-launched internally to gather designer feedback"
+        ],
+        "title": "What I Did"
+      },
+      "businessValue": {
+        "content": "The design system transformed how Allegion builds digital products. Teams now speak the same language, share the same components, and deliver consistent experiences. The investment in the system paid dividends across every project that followed.",
+        "metrics": [
+          { "label": "Faster prototyping", "value": "3x" },
+          { "label": "Component documentation coverage", "value": "100%" },
+          { "label": "Design-to-dev handoff time", "value": "↓" },
+          { "label": "Cross-team consistency", "value": "↑" }
+        ],
+        "title": "Business Value"
+      },
+      "customerProblem": {
+        "content": "The Allegion brand absorbed legacy brands like Schlage, Von Duprin, and LCN—each with over 100 years of history. As Allegion shifted from manufacturing company to technology company, an explosion of in-house software revealed a critical problem: no consistent look and feel across applications and marketing. Every web property and app looked different, creating confusion for users and inefficiency for teams.",
+        "title": "Customer Problem"
+      },
+      "futureState": {
+        "content": "Project Phoenix continues to evolve as the foundation for Allegion's digital products. The governance model we established ensures the system grows with the organization while maintaining the consistency and quality that made it successful.",
+        "title": "Future State"
+      },
+      "image": {
+        "_type": "image",
+        "asset": {
+          "_ref": "image-584a0cc3ac07a8e1e9c83592430a1e6db2e36859-3840x2160-webp",
+          "_type": "reference"
+        }
+      },
+      "meta": {
+        "company": "Allegion",
+        "duration": "1 year",
+        "role": "Co-Author, Sr. UI Designer",
+        "team": "2 Design System Authors"
+      },
+      "order": 2,
+      "slug": "enterprise-design-system",
+      "tag": "Design Systems",
+      "title": "Many Components, One System",
+      "vision": {
+        "content": "Create a unified design system that would serve as the foundation for all Allegion digital products—enabling designers to prototype faster, developers to build consistently, and users to enjoy cohesive experiences across every touchpoint.",
+        "title": "Vision"
+      }
+    },
+    {
+      "_id": "yBaMNUM1tGJskTkstnDwjV",
+      "after": {
+        "content": "The refreshed Overtur delivered streamlined navigation that freed up screen real estate for actual work. The new dashboard clearly displayed projects users belonged to, were invited to, and had completed. A note and mention system enabled seamless team collaboration. The report builder simplified what was once a multi-step wizard into an editor with live preview.",
+        "image": null,
+        "title": "After"
+      },
+      "before": {
+        "content": "The application had grown organically without a unified design vision. Users struggled with unintuitive navigation that hid important information. They couldn't easily jump between projects, often resorting to opening multiple browser tabs which slowed everything down.",
+        "image": null,
+        "title": "Before"
+      },
+      "behavior": {
+        "content": "Conducted a heuristic analysis to identify what users loved and what needed improvement. Ran competitive analysis of similar applications. Interviewed multiple user groups and user councils (actual community councils in the Overtur ecosystem). Focused on simplifying navigation while keeping important information at the forefront—clean but not cluttered.",
+        "highlights": [
+          "Performed heuristic analysis of existing application",
+          "Interviewed user councils and individual power users",
+          "Redesigned navigation for maximum real estate and clarity",
+          "Created new dashboard showing project status at a glance",
+          "Designed note/mention system for team collaboration",
+          "Built report builder with live preview",
+          "Applied Project Phoenix design system components"
+        ],
+        "title": "What I Did"
+      },
+      "businessValue": {
+        "content": "The redesign was tested daily with expert users and user councils. Despite initial resistance from some users who weren't ready for change, the overwhelming response was excitement about the transformation. Users recognized the improvements made their daily work significantly more efficient.",
+        "metrics": [
+          { "label": "Time to complete tasks", "value": "↓" },
+          { "label": "Screen real estate for work", "value": "↑" },
+          { "label": "Unified navigation system", "value": "1" },
+          { "label": "User satisfaction scores", "value": "↑" }
+        ],
+        "title": "Business Value"
+      },
+      "customerProblem": {
+        "content": "Overtur had become immensely popular because nothing else in the industry did what it did. But success brought challenges: no visual consistency, weak navigation, and illogical paths to complete objectives. Users felt trapped at times, taking 5x longer than necessary to navigate because of excessive clicking and searching.",
+        "title": "Customer Problem"
+      },
+      "futureState": {
+        "content": "Overtur continues to grow as the leading tool for door security collaboration. The design patterns established during this refresh have become templates for future feature development, ensuring consistency as the platform evolves.",
+        "title": "Future State"
+      },
+      "image": {
+        "_type": "image",
+        "asset": {
+          "_ref": "image-bda08aa6e232e9527bed784e430b15bd7c5a4793-3840x2160-webp",
+          "_type": "reference"
+        }
+      },
+      "meta": {
+        "company": "Allegion",
+        "duration": "8 months",
+        "role": "Lead Designer",
+        "team": "Design + Development Team"
+      },
+      "order": 3,
+      "slug": "construction-collaboration-app",
+      "tag": "Enterprise UX",
+      "title": "Building in Real Time",
+      "vision": {
+        "content": "Modernize Overtur—a cloud-based application enabling teams to collaborate on door security and openings specification—while preserving the workflows users had come to rely on. The growing popularity demanded an interface that matched the platform's innovative capabilities.",
+        "title": "Vision"
+      }
+    },
+    {
+      "_id": "yBaMNUM1tGJskTkstnDww5",
+      "after": {
+        "content": "The new Access Management portal provides immediate visibility through a dashboard greeting. Administrators can see unvalidated users, resend invitations, and view analytics on user behavior at a glance. User management became dramatically easier with card-format views that enable quick actions and seamless switching between contexts.",
+        "image": null,
+        "title": "After"
+      },
+      "before": {
+        "content": "Administrators struggled with a dated interface that made simple tasks unnecessarily complex. There was no clear visibility into user status, pending invitations, or application usage. The growing number of applications only compounded the management challenges.",
+        "image": null,
+        "title": "Before"
+      },
+      "behavior": {
+        "content": "Researched what others were doing in user management space, then focused on making administration \"super simple.\" Explored progressive disclosure with a tree-panel concept, but user testing revealed concerns about screen real estate. Based on surveys, users wanted persistent navigation showing where they were and how to navigate. This led to a side-nav approach with breadcrumb support.",
+        "highlights": [
+          "Conducted user interviews and surveys on navigation preferences",
+          "Designed dashboard with immediate visibility into user status",
+          "Created user card format for quick management actions",
+          "Implemented side navigation with breadcrumb support",
+          "Built quick-switch functionality between companies, users, and applications",
+          "Applied Project Phoenix design system as testbed"
+        ],
+        "title": "What I Did"
+      },
+      "businessValue": {
+        "content": "The biggest feedback was the immediate visibility administrators gained. Simply adding a dashboard that showed their user base status—unvalidated users, invitation status, new vs. returning users—transformed their daily workflow. This project also served as a valuable testbed for Project Phoenix, validating the design system in a real application.",
+        "metrics": [
+          { "label": "Time to manage users", "value": "↓" },
+          { "label": "Visibility into user base", "value": "↑" },
+          { "label": "Dashboard for all key metrics", "value": "1" },
+          { "label": "Admin satisfaction", "value": "↑" }
+        ],
+        "title": "Business Value"
+      },
+      "customerProblem": {
+        "content": "The Access Management portal was old and outdated, used daily by Allegion and company administrators to add users to applications. As the application base grew, management became increasingly difficult. Users reported major issues with visibility—they couldn't see their actual user base or identify what actions needed to be taken.",
+        "title": "Customer Problem"
+      },
+      "futureState": {
+        "content": "Access Management continues to serve as the central hub for Allegion application user management. The patterns and components validated during this project informed future development of the design system and other enterprise applications.",
+        "title": "Future State"
+      },
+      "image": {
+        "_type": "image",
+        "asset": {
+          "_ref": "image-f866bb71e56c354b2c0653d25b105c6433d383d1-3840x2160-png",
+          "_type": "reference"
+        }
+      },
+      "meta": {
+        "company": "Allegion",
+        "duration": "4 months",
+        "role": "Lead Designer",
+        "team": "Design + Development Team"
+      },
+      "order": 4,
+      "slug": "enterprise-app-portfolio-manager",
+      "tag": "Enterprise UX",
+      "title": "Making Complexity Disappear",
+      "vision": {
+        "content": "Transform Access Management from an outdated portal into a modern, intuitive system that empowers administrators to efficiently manage users across Allegion's growing application portfolio.",
+        "title": "Vision"
+      }
+    },
+    {
+      "_id": "7172bcfe-362a-412b-98bb-91d1f3f5cc3d",
+      "after": {
+        "content": "Families can now create individual participant profiles, register directly for workshops, and track earned badges digitally. The experience connects in-store participation with a lasting digital profile, unlocking milestone tracking and future gamification capabilities.",
+        "image": null,
+        "title": "After"
+      },
+      "before": {
+        "content": "Workshop registration operated at the household level through the retailer's rewards accounts. Participants earned physical badges in-store, but there was no individual digital profile, no scalable milestone tracking, and no persistent engagement layer to connect workshop participation to the broader loyalty platform.",
+        "image": null,
+        "title": "Before"
+      },
+      "behavior": {
+        "content": "I partnered with loyalty and enterprise platform teams to define and design the Profile and Digital Badge experience—balancing playful engagement with responsible data handling and scalable platform architecture.",
+        "highlights": [
+          "Designed participant profile creation within the loyalty rewards platform",
+          "Structured consent flows for household approval",
+          "Integrated profile selection into workshop registration",
+          "Designed the digital Badges experience with empty and earned states",
+          "Established a foundation for milestone tracking and progression tiers",
+          "Helped shape the long-term gamification and loyalty engagement strategy",
+          ""
+        ],
+        "title": "What I Did"
+      },
+      "businessValue": {
+        "content": "The launch established a scalable engagement platform within loyalty while driving immediate adoption. By connecting family participation to digital profiles and milestone tracking, the experience supports increased store visits, deeper brand affinity, and long-term loyalty engagement.",
+        "metrics": [
+          { "label": "FIRST-WEEK ADOPTION", "value": "Rapid" },
+          { "label": "REGISTRATION RATE", "value": "High" }
+        ],
+        "title": "Business Value"
+      },
+      "customerProblem": {
+        "content": "A major home improvement retailer's hands-on workshops had a deeply engaged in-store following, but the digital experience lacked the infrastructure to support individual participant registration, attendance tracking, and milestone recognition. Without the ability to create participant-specific profiles with household consent, there was no way to scale digital badge tracking or build a foundation for long-term engagement within the loyalty ecosystem.",
+        "title": "Customer Problem"
+      },
+      "futureState": {
+        "content": "The program evolves into a family-centric engagement ecosystem—expanding digital badges to new events and activities, introducing progression-based recognition, and reinforcing the brand as a multigenerational experience.",
+        "title": "Future State"
+      },
+      "image": {
+        "_type": "image",
+        "asset": {
+          "_ref": "image-ae20ffe5f3834ca6bfd25ebd8e741069c874dcab-3840x2160-webp",
+          "_type": "reference"
+        }
+      },
+      "meta": {
+        "company": "Lowe's",
+        "duration": "4 months",
+        "role": "Lead Product Designer",
+        "team": "1 Designer, 1 PM, 4 Engineers"
+      },
+      "order": null,
+      "slug": "turning-in-store-badges-into-a-digital-engagement-layer",
+      "tag": "Product Design, Loyalty, Workshops, Badges",
+      "title": "Turning In-Store Badges Into a Digital Engagement Layer",
+      "vision": {
+        "content": "Transform a beloved in-store tradition into a scalable digital engagement platform — giving every participant a personal profile, every badge a digital home, and every family a reason to keep coming back.",
+        "title": "Vision"
+      }
+    },
+    {
+      "_id": "LqXZlr5c7TWNkGYzJ9gt95",
+      "after": {
+        "content": "The new platform transformed how salespeople work. The Sales Pipeline provides a clear, linear view of deals progressing through stages. The Customer Card enables instant access to any customer's complete history without losing context. The Conversation tool consolidated all communication channels into one interface. Users can now complete complex workflows in a fraction of the time.",
+        "image": null,
+        "title": "After"
+      },
+      "before": {
+        "content": "The existing application lacked visual consistency and clear user pathways. Salespeople struggled to track customer conversations across multiple channels, manage their sales pipeline effectively, and access customer information quickly. The interface felt dated and didn't reflect the innovative technology underneath.",
+        "image": null,
+        "title": "Before"
+      },
+      "behavior": {
+        "content": "Led the complete redesign starting with market research—investigating competitors, influencers, and target audience to create strategies aligned with business goals. Developed the new brand identity including logo, color palette, and design language. Then translated this into a comprehensive application redesign, tackling features piece by piece with rapid prototyping and user validation.",
+        "highlights": [
+          "Conducted user interviews and feature prioritization sessions",
+          "Designed new brand identity with green/purple palette symbolizing renewal and creativity",
+          "Created the Sales Pipeline dashboard for visual deal tracking",
+          "Designed the Customer Card system for quick access to all customer data",
+          "Built the Conversation feature for unified multi-channel communication",
+          "Developed Vehicle Card for inventory presentation",
+          "Designed DMS Linking for seamless data synchronization"
+        ],
+        "title": "What I Did"
+      },
+      "businessValue": {
+        "content": "The platform became a leader in automotive CRM, taking the industry by storm. Salespeople reported dramatically improved efficiency, and the unified conversation tool eliminated the chaos of managing multiple communication channels separately.",
+        "metrics": [
+          { "label": "Faster customer lookup", "value": "5x" },
+          { "label": "Reduction in context switching", "value": "60%" },
+          { "label": "More deals visible at once", "value": "3x" },
+          { "label": "Industry adoption rate", "value": "↑" }
+        ],
+        "title": "Business Value"
+      },
+      "customerProblem": {
+        "content": "DriveCentric (formerly DriveVelocity) underwent a complete rebrand overnight. Despite an existing user base, leadership wanted to overhaul everything from company branding to all web and mobile applications. The challenge was rapidly establishing a new brand identity while translating it into a cohesive application experience, refining existing features, and forging the path forward for how users would perceive both the company and the platform.",
+        "title": "Customer Problem"
+      },
+      "futureState": {
+        "content": "Being part of DriveCentric will always hold a special place in my memory because of what we built in such a short time. It was a tremendous learning experience seeing how an application could transform an entire industry and make salespeople's jobs dramatically more efficient. The platform continues to grow with new features on the roadmap.",
+        "title": "Future State"
+      },
+      "image": {
+        "_type": "image",
+        "asset": {
+          "_ref": "image-4e46b77b75bca19fe297cdcc45fd7142ca24b2f2-3840x2160-webp",
+          "_type": "reference"
+        }
+      },
+      "meta": {
+        "company": "DriveCentric",
+        "duration": "5 years",
+        "role": "Lead Designer",
+        "team": "Design Lead + Engineering Team"
+      },
+      "order": null,
+      "slug": "automotive-dealership-crm",
+      "tag": "Product Design",
+      "title": "Unifying Dealer Experience",
+      "vision": {
+        "content": "Transform how automotive dealerships manage customer relationships by creating a modern, intuitive CRM that helps salespeople focus on what matters most—selling cars and building relationships. The platform needed to streamline complex dealership workflows while feeling effortless to use.",
+        "title": "Vision"
+      }
+    },
+    {
+      "_id": "eb4d8dd7-2a14-4aec-94ff-78427f98623d",
+      "after": {
+        "content": "The experience became more transparent, contextual, and reinforcing. Customers could understand their status, track value earned, and see benefits in moments that influenced purchase decisions.",
+        "image": null,
+        "title": "After"
+      },
+      "before": {
+        "content": "Program information was fragmented and largely static. Rewards visibility was low in high-intent shopping moments, and tier distinctions were not clearly articulated—limiting engagement and perceived exclusivity.",
+        "image": null,
+        "title": "Before"
+      },
+      "behavior": {
+        "content": "I repositioned loyalty from a passive rewards program to an engagement engine embedded within the shopping journey. I defined structural improvements that increased clarity, contextual visibility, and perceived value across tiers.",
+        "highlights": [
+          "Clarified benefit hierarchy and tier differentiation",
+          "Integrated loyalty visibility within high-intent funnel moments",
+          "Elevated account dashboards to reinforce reward tracking",
+          "Structured messaging to better articulate free vs. premium tier value",
+          "Partnered cross-functionally to align loyalty UX with growth KPIs"
+        ],
+        "title": "What I Did"
+      },
+      "businessValue": {
+        "content": "The redesign strengthened loyalty engagement, increased repeat purchase behavior, and reinforced retention strategy by making value visible at the right time—turning loyalty into a measurable growth lever.",
+        "metrics": [
+          { "label": "REWARD TOUCHPOINTS", "value": "3x" },
+          { "label": "Shopper Segment Programs", "value": "2" },
+          { "label": "FUNNEL INTEGRATION", "value": "100%" }
+        ],
+        "title": "Business Value"
+      },
+      "customerProblem": {
+        "content": "Loyalty members struggled to perceive differentiated value. Benefits were inconsistently surfaced, tier progression lacked clarity, and the experience failed to reinforce emotional commitment to the brand.",
+        "title": "Customer Problem"
+      },
+      "futureState": {
+        "content": "A behavior-responsive loyalty ecosystem that dynamically surfaces personalized incentives, progression nudges, and contextual rewards—deepening long-term brand commitment.",
+        "title": "Future State"
+      },
+      "image": {
+        "_type": "image",
+        "asset": {
+          "_ref": "image-763b4cae17750044d5fe3668528b13c2609c79d6-5760x3240-webp",
+          "_type": "reference"
+        }
+      },
+      "meta": {
+        "company": "Lowe's",
+        "duration": "8 months",
+        "role": "Lead Product Designer",
+        "team": "2 Designers"
+      },
+      "order": null,
+      "slug": "redesigning-how-customers-experience-loyalty",
+      "tag": "Product Design, Loyalty, PRO, DIY",
+      "title": "Redesigning How Customers Experience Loyalty",
+      "vision": {
+        "content": "Make loyalty felt, not buried — embedding rewards and recognition into the moments that matter most, so customers always understand the value of staying.",
+        "title": "Vision"
+      }
+    },
+    {
+      "_id": "f1853c18-a6cb-4ce3-a505-5055ff39cf0a",
+      "after": {
+        "content": "The experience shifted from \"fill out a survey and hope for the best\" to a guided maintenance relationship. Customers gained clarity at enrollment, transparency through service delivery, and a reason to stay engaged over time. Field associates had better tools and clearer workflows. Internally, the platform became more scalable — reducing operational bottlenecks between digital, field, and merchant operations and accelerating the path to new service categories.",
+        "image": null,
+        "title": "After"
+      },
+      "before": {
+        "content": "The subscription experience was transactional. Enrollment flows were long and front-loaded, service selection lacked guidance, and there was no meaningful connection between sign-up and long-term engagement. Field associates and digital touchpoints operated independently, and the management experience was scattered across surfaces with no centralized view. The result was a program that asked customers to figure it out on their own — then hoped they'd come back.",
+        "image": null,
+        "title": "Before"
+      },
+      "behavior": {
+        "content": "I led the end-to-end redesign of the subscription experience, reshaping it from a sign-up flow into a scalable home services platform. The work spanned onboarding, service delivery, and long-term retention — connecting customer experience, field operations, and subscription strategy into a unified system.",
+        "highlights": [
+          "Reimagined customer onboarding experience by reducing cognitive load, clarifying service selection, and shifting toward a guided, progressive enrollment approach",
+          "Defined two clear entry paths — self-directed and assessment-led — with hybrid flexibility between them",
+          "Built eligibility validation, disqualification transparency, and exception handling into the journey",
+          "Shaped the service experience model: how field associates gather data, complete services in-visit, deliver visual reports, and trigger proactive rebooking",
+          "Designed a continuous engagement loop — Educate, Assess, Deliver, Report, Rebook, Maintain — replacing a one-and-done transaction with an ongoing relationship",
+          "Connected the work to the broader subscription strategy: centralized management concepts, digital wallet integration to reduce payment friction, and retention optimization"
+        ],
+        "title": "What I Did"
+      },
+      "businessValue": {
+        "content": "By aligning product experience with retention strategy, the design drove measurable improvements in sign-up volume, retention, and speed to market. Wallet integration reduced friction-based churn risk. The work positioned the platform as a durable revenue stream and a foundation for a broader home services ecosystem.",
+        "metrics": [
+          { "label": "SUBSCRIPTION GROWTH", "value": "Double Digit" },
+          { "label": "RETENTION LIFT", "value": "Measurable" },
+          { "label": "ONBOARDING SPEED", "value": "Same Day" }
+        ],
+        "title": "Business Value"
+      },
+      "customerProblem": {
+        "content": "Home maintenance is reactive by nature. Homeowners don't know what they need, when they need it, or how to manage it over time. The digital experience compounded this confusion — enrollment was complex, service eligibility was unclear, and there was no cohesive loop connecting assessment, delivery, and ongoing care. Internally, disconnected workflows between digital tools, field associates, and merchant operations created friction that slowed growth and limited scalability.",
+        "title": "Customer Problem"
+      },
+      "futureState": {
+        "content": "The platform evolves into a proactive home partnership — anticipating maintenance needs, surfacing intelligent recommendations, expanding into new service categories, and reinforcing an ongoing relationship that grows with the homeowner over time.",
+        "title": "Future State"
+      },
+      "image": {
+        "_type": "image",
+        "asset": {
+          "_ref": "image-57ff40c10ee41c9004b5760c390b28f5c3360f73-3840x2160-webp",
+          "_type": "reference"
+        }
+      },
+      "meta": {
+        "company": "Lowe's",
+        "duration": "8 months",
+        "role": "Lead Product Designer",
+        "team": "2 Designers"
+      },
+      "order": null,
+      "slug": "home-maintenance-subscription-platform",
+      "tag": "Product Design, Subscription Platform",
+      "title": "Home Maintenance Subscription Platform",
+      "vision": {
+        "content": "Turn home maintenance from something homeowners react to into a relationship they rely on — guided, proactive, and built to grow with them over time.",
+        "title": "Vision"
+      }
+    }
+  ],
+  "syncTags": ["s1:/MYy+Q"],
+  "ms": 9
+}

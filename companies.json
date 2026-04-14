@@ -1,0 +1,37 @@
+{
+  "query": "*[_type == 'company'] | order(order asc){_id,name,sector,image}",
+  "result": [
+    {
+      "_id": "LqXZlr5c7TWNkGYzJ9jHUa",
+      "image": null,
+      "name": "Lowe's",
+      "sector": "Enterprise Retail"
+    },
+    {
+      "_id": "Y1vZgBTRMCTsP8o9tLoO9j",
+      "image": {
+        "_type": "image",
+        "asset": {
+          "_ref": "image-c322d71e5597f7044d663469dddb03248ba5bf15-1724x1150-jpg",
+          "_type": "reference"
+        }
+      },
+      "name": "DriveCentric",
+      "sector": "SaaS / Automotive"
+    },
+    {
+      "_id": "yBaMNUM1tGJskTkstnGhgh",
+      "image": null,
+      "name": "Indiana Pacers",
+      "sector": "Sports \u0026 Entertainment"
+    },
+    {
+      "_id": "Y1vZgBTRMCTsP8o9tLoPEp",
+      "image": null,
+      "name": "General Motors",
+      "sector": "Automotive"
+    }
+  ],
+  "syncTags": ["s1:pvFrvw"],
+  "ms": 6
+}
