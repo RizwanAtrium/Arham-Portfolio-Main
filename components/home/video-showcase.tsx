@@ -13,7 +13,6 @@ export function VideoShowcase() {
   const shellRef = useRef<HTMLDivElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
   const wrapperRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const wrapperRatioRef = useRef<number[]>([]);
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const sectionActiveRef = useRef(false);
   const previousActiveIndexRef = useRef(-1);
@@ -263,46 +262,63 @@ export function VideoShowcase() {
       return;
     }
 
-    wrapperRatioRef.current = Array.from({ length: wrappers.length }, () => 0);
+    let frame = 0;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const index = Number((entry.target as HTMLDivElement).dataset.index ?? "-1");
-          if (index < 0) {
-            return;
-          }
-          wrapperRatioRef.current[index] = entry.isIntersecting ? entry.intersectionRatio : 0;
-        });
+    const syncActiveIndex = () => {
+      if (!sectionActiveRef.current) {
+        return;
+      }
 
-        if (!sectionActiveRef.current) {
-          return;
+      const activationY = window.innerHeight * 0.45;
+      let nextIndex = -1;
+      let fallbackIndex = -1;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      wrappers.forEach((wrapper, index) => {
+        const rect = wrapper.getBoundingClientRect();
+        const center = rect.top + rect.height / 2;
+        const distance = Math.abs(center - activationY);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          fallbackIndex = index;
         }
 
-        let nextIndex = -1;
-        let bestRatio = 0;
-        wrapperRatioRef.current.forEach((ratio, index) => {
-          if (ratio > bestRatio) {
-            bestRatio = ratio;
-            nextIndex = index;
-          }
-        });
-
-        if (nextIndex >= 0 && bestRatio > 0.08) {
-          setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
+        if (rect.top <= activationY && rect.bottom > activationY) {
+          nextIndex = index;
         }
-      },
-      {
-        threshold: [0, 0.08, 0.16, 0.24, 0.34, 0.5, 0.66, 0.82, 1],
-      },
-    );
+      });
 
-    wrappers.forEach((wrapper, index) => {
-      wrapper.dataset.index = String(index);
-      observer.observe(wrapper);
-    });
+      const resolvedIndex = nextIndex >= 0 ? nextIndex : fallbackIndex;
 
-    return () => observer.disconnect();
+      if (resolvedIndex >= 0) {
+        setActiveIndex((current) => (current === resolvedIndex ? current : resolvedIndex));
+      }
+    };
+
+    const requestSync = () => {
+      if (frame !== 0) {
+        return;
+      }
+
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        syncActiveIndex();
+      });
+    };
+
+    requestSync();
+    window.addEventListener("scroll", requestSync, { passive: true });
+    window.addEventListener("resize", requestSync);
+
+    return () => {
+      if (frame !== 0) {
+        window.cancelAnimationFrame(frame);
+      }
+
+      window.removeEventListener("scroll", requestSync);
+      window.removeEventListener("resize", requestSync);
+    };
   }, []);
 
   useEffect(() => {
@@ -366,7 +382,7 @@ export function VideoShowcase() {
             return;
           }
 
-          video.loop = true;
+          video.loop = false;
           video.playsInline = true;
           video.preload = "auto";
 
@@ -489,10 +505,12 @@ export function VideoShowcase() {
                     videoRefs.current[index] = element;
                   }}
                   src={item.src}
-                  className="h-full w-full object-cover"
+                  className="pointer-events-none h-full w-full object-cover"
                   preload="auto"
                   playsInline
                   controls={false}
+                  disablePictureInPicture
+                  controlsList="nodownload noplaybackrate noremoteplayback nofullscreen"
                   onLoadedData={() => {
                     if (index === activeIndexRef.current && sectionActiveRef.current) {
                       const video = videoRefs.current[index];
