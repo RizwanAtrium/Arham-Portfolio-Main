@@ -17,6 +17,7 @@ const DRIVE_WARNING_FORM_PATTERN =
   /<form id="download-form" action="([^"]+)" method="get">([\s\S]*?)<\/form>/i;
 const DRIVE_WARNING_INPUT_PATTERN =
   /<input[^>]+type="hidden"[^>]+name="([^"]+)"[^>]+value="([^"]*)"/gi;
+const DEFAULT_VIDEO_RANGE = "bytes=0-1048575";
 
 function buildDriveDownloadUrl(fileId: string) {
   return `${GOOGLE_DRIVE_DOWNLOAD_BASE}?id=${encodeURIComponent(fileId)}&export=download`;
@@ -109,12 +110,11 @@ export function getDriveReelUrl(fileName: string) {
   return fileId ? buildDriveDownloadUrl(fileId) : null;
 }
 
-function buildDriveRequestHeaders(request: Request) {
+function buildDriveRequestHeaders(rangeHeader?: string | null) {
   const headers = new Headers();
-  const range = request.headers.get("range");
 
-  if (range) {
-    headers.set("range", range);
+  if (rangeHeader) {
+    headers.set("range", rangeHeader);
   }
 
   return headers;
@@ -143,26 +143,37 @@ function buildConfirmedDownloadUrl(warningHtml: string, responseUrl: string) {
   return confirmedUrl.toString();
 }
 
+async function closeResponseBody(response: Response) {
+  try {
+    await response.body?.cancel();
+  } catch {
+    // Ignore body cancellation failures on already-consumed streams.
+  }
+}
+
 async function fetchDriveStream(request: Request, driveUrl: string) {
-  const requestHeaders = buildDriveRequestHeaders(request);
-  const initialResponse = await fetch(driveUrl, {
-    headers: requestHeaders,
+  const requestedRange = request.headers.get("range");
+  const effectiveRange = requestedRange ?? DEFAULT_VIDEO_RANGE;
+  const probeResponse = await fetch(driveUrl, {
     redirect: "follow",
   });
 
-  if (!isDriveWarningHtml(initialResponse)) {
-    return initialResponse;
+  if (!isDriveWarningHtml(probeResponse)) {
+    const resolvedUrl = probeResponse.url;
+    await closeResponseBody(probeResponse);
+
+    return fetch(resolvedUrl, {
+      headers: buildDriveRequestHeaders(effectiveRange),
+      redirect: "follow",
+    });
   }
 
-  const warningHtml = await initialResponse.text();
-  const confirmedUrl = buildConfirmedDownloadUrl(warningHtml, initialResponse.url);
+  const warningHtml = await probeResponse.text();
+  const confirmedUrl = buildConfirmedDownloadUrl(warningHtml, probeResponse.url);
+  const resolvedUrl = confirmedUrl ?? driveUrl;
 
-  if (!confirmedUrl) {
-    return null;
-  }
-
-  return fetch(confirmedUrl, {
-    headers: requestHeaders,
+  return fetch(resolvedUrl, {
+    headers: buildDriveRequestHeaders(effectiveRange),
     redirect: "follow",
   });
 }
@@ -175,17 +186,33 @@ export async function proxyDriveVideo(
   const driveResponse = await fetchDriveStream(request, driveUrl);
 
   if (!driveResponse) {
-    return new Response("Remote video unavailable", { status: 502 });
+    return new Response("Remote video unavailable", {
+      status: 503,
+      headers: { "Cache-Control": "no-store" },
+    });
   }
 
   if (!driveResponse.ok && driveResponse.status !== 206) {
-    return new Response("Remote video unavailable", { status: driveResponse.status });
+    return new Response("Remote video unavailable", {
+      status: driveResponse.status,
+      headers: { "Cache-Control": "no-store" },
+    });
+  }
+
+  const contentType = driveResponse.headers.get("content-type") ?? "video/mp4";
+
+  if (!contentType.startsWith("video/")) {
+    return new Response("Remote video unavailable", {
+      status: 503,
+      headers: { "Cache-Control": "no-store" },
+    });
   }
 
   const responseHeaders = new Headers({
-    "Cache-Control": "public, max-age=3600",
+    "Cache-Control": "public, max-age=300, s-maxage=300",
     "Content-Disposition": "inline",
-    "Content-Type": driveResponse.headers.get("content-type") ?? "video/mp4",
+    "Content-Type": contentType,
+    Vary: "Range",
   });
 
   for (const headerName of DRIVE_VIDEO_HEADER_NAMES) {
