@@ -16,6 +16,7 @@ type VideoShowcaseItem = {
   title: string;
   description: string;
   src: string;
+  poster: string;
   meta: string;
 };
 
@@ -189,6 +190,7 @@ export const siteSettings = {
       description:
         "A cinematic showcase with full-bleed motion, rich pacing, and an editorial overlay that keeps the work premium instead of noisy.",
       src: "/videos/jewellery-brand.mp4",
+      poster: "/images/cinema-rig.jpg",
       meta: "Jewellery / AI Video",
     },
     {
@@ -198,6 +200,7 @@ export const siteSettings = {
       description:
         "A high-contrast product reel built to own the viewport and keep the pacing deliberate while the page scrolls around it.",
       src: "/videos/patek-motion.mp4",
+      poster: "/images/camera-monitor-desk.jpg",
       meta: "Watch / Motion Reel",
     },
     {
@@ -207,6 +210,7 @@ export const siteSettings = {
       description:
         "The video owns the entire section while the copy stays restrained, so the experience feels deliberate and not like a random embed dropped into the layout.",
       src: "/videos/ravea-lipstick.mp4",
+      poster: "/images/laptop-editing-screen.jpg",
       meta: "Lipstick / Brand Film",
     },
     {
@@ -216,6 +220,7 @@ export const siteSettings = {
       description:
         "Each reel enters as its own scene, stays pinned while active, and hands off to the next one with depth, contrast, and clean control of sound.",
       src: "/videos/debonair-final.mp4",
+      poster: "/images/filmmaker-desk.jpg",
       meta: "Fashion / Debonair",
     },
     {
@@ -225,6 +230,7 @@ export const siteSettings = {
       description:
         "The section stays visually consistent while the content can shift into a lighter, more emotional tone without breaking the page rhythm.",
       src: "/videos/cheerful-moments.mp4",
+      poster: "/images/gimbal-setup.jpg",
       meta: "Lifestyle / Brand Story",
     },
     {
@@ -234,6 +240,7 @@ export const siteSettings = {
       description:
         "A more narrative video still feels cohesive here because the structure, spacing, and transitions are doing the heavy lifting.",
       src: "/videos/crime-documentary.mp4",
+      poster: "/images/podcast-video-desk.jpg",
       meta: "Documentary / Narrative",
     },
     {
@@ -243,6 +250,7 @@ export const siteSettings = {
       description:
         "Short-form promotional content sits inside the same sticky sequence, giving even smaller assets a polished presentation layer.",
       src: "/videos/shaljit-ad.mp4",
+      poster: "/images/camera-table.jpg",
       meta: "Ad / Promo",
     },
   ] satisfies VideoShowcaseItem[],

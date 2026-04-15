@@ -64,14 +64,14 @@ img {
 .page-frame {
   margin-inline: auto;
   width: min(100%, 1440px);
-  padding-inline: 1.25rem;
+  padding-inline: 1rem;
 }
 
 .camera-track {
   position: sticky;
   top: 0;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   overflow: hidden;
   perspective: 1500px;
 }
@@ -132,6 +132,7 @@ img {
   height: 100%;
   align-items: center;
   justify-content: center;
+  padding-inline: 0.75rem;
   user-select: none;
 }
 
@@ -411,24 +412,73 @@ img {
 }
 
 @media (max-width: 768px) {
+  .page-frame {
+    padding-inline: 1rem;
+  }
+
+  .camera-track {
+    position: relative;
+    height: auto;
+    min-height: 34rem;
+    width: 100%;
+    perspective: none;
+  }
+
+  .artboard {
+    position: relative;
+    min-height: 34rem;
+  }
+
+  .hero-ic {
+    align-items: center;
+    min-height: 34rem;
+    padding-top: 4.8rem;
+    padding-bottom: 1.8rem;
+    padding-inline: 1rem;
+  }
+
+  .hero-ic-wrap {
+    width: min(100%, 18rem);
+  }
+
   .hero-ic-eye {
+    margin-bottom: 14px;
     font-size: 10px;
     letter-spacing: 2px;
   }
 
+  .mask-wrap {
+    display: block;
+    padding: 6px 0;
+  }
+
+  .drag-text {
+    font-size: clamp(2.9rem, 16vw, 4.4rem);
+    line-height: 0.92;
+  }
+
   .hero-ic-sub {
-    width: min(100%, 28rem);
-    margin-top: 1.25rem;
-    padding: 0 0.75rem;
-    font-size: 1rem;
-    line-height: 1.45;
+    width: min(100%, 18rem);
+    margin-top: 1rem;
+    padding: 0 0.2rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
   }
 
   .hero-stage-outline {
-    left: 4vw;
-    right: 4vw;
-    top: 16vh;
-    bottom: 14vh;
+    left: 1rem;
+    right: 1rem;
+    top: 4.15rem;
+    bottom: 0.75rem;
+    border-radius: 18px;
+  }
+
+  .hero-stage-shadow {
+    display: none;
+  }
+
+  .hero-canvas-grid {
+    display: none;
   }
 }
 

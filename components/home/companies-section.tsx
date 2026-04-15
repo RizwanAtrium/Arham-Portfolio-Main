@@ -297,9 +297,26 @@ export function CompaniesSection() {
               }
               onMouseLeave={() => setPreview(null)}
             >
-              <span className="company-name font-display text-[clamp(2rem,4.7vw,4.8rem)] font-bold uppercase leading-none tracking-[-0.05em] text-transparent [text-stroke:1px_rgba(255,255,255,0.25)] transition duration-300 hover:text-[var(--color-accent)] hover:[text-stroke:1px_transparent]">
-                {company.name}
-              </span>
+              <div className="space-y-4 md:space-y-0">
+                <span className="company-name font-display text-[clamp(2rem,4.7vw,4.8rem)] font-bold uppercase leading-none tracking-[-0.05em] text-transparent [text-stroke:1px_rgba(255,255,255,0.25)] transition duration-300 hover:text-[var(--color-accent)] hover:[text-stroke:1px_transparent]">
+                  {company.name}
+                </span>
+
+                <div className="overflow-hidden rounded-[1rem] border border-white/8 bg-[var(--color-surface)] md:hidden">
+                  {company.previewSrc ? (
+                    <img
+                      src={company.previewSrc}
+                      alt={company.name}
+                      className="h-40 w-full object-cover object-center"
+                    />
+                  ) : (
+                    <div className="flex h-40 w-full items-center justify-center bg-[radial-gradient(circle_at_top,#1d1d1d,transparent_70%),linear-gradient(135deg,#111,#050505)] font-display text-2xl uppercase tracking-[-0.04em] text-white/60">
+                      {company.name}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <span className="company-sector font-mono text-[12px] uppercase tracking-[0.18em] text-white/45">
                 {company.sector}
               </span>

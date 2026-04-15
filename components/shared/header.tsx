@@ -59,10 +59,10 @@ export function Header() {
           hidden ? "-translate-y-full" : "translate-y-0"
         }`}
       >
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-6 md:px-10">
+        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-3.5 py-4 md:px-10 md:py-6">
           <Link
             href="/"
-            className="font-display text-sm font-bold uppercase tracking-[0.16em] text-white mix-blend-difference"
+            className="min-w-0 max-w-[calc(100%-3.75rem)] truncate font-display text-[11px] font-bold uppercase leading-none tracking-[0.12em] text-white md:max-w-none md:text-sm md:tracking-[0.16em] md:mix-blend-difference"
           >
             Arham Mansoor
           </Link>
@@ -83,17 +83,15 @@ export function Header() {
           <button
             type="button"
             onClick={() => setMenuOpen((current) => !current)}
-            className="inline-flex items-center gap-3 md:hidden"
+            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/28 backdrop-blur-sm md:hidden"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/70">
-              {menuOpen ? "Close" : "Menu"}
-            </span>
-            <span className="flex h-5 w-7 flex-col justify-between">
+            <span className="sr-only">{menuOpen ? "Close" : "Menu"}</span>
+            <span className="flex h-3.5 w-4.5 flex-col justify-between">
               <span
                 className={`h-px bg-white transition ${
-                  menuOpen ? "translate-y-[9px] rotate-45" : ""
+                  menuOpen ? "translate-y-[6px] rotate-45" : ""
                 }`}
               />
               <span
@@ -101,7 +99,7 @@ export function Header() {
               />
               <span
                 className={`h-px bg-white transition ${
-                  menuOpen ? "-translate-y-[9px] -rotate-45" : ""
+                  menuOpen ? "-translate-y-[6px] -rotate-45" : ""
                 }`}
               />
             </span>
@@ -114,7 +112,7 @@ export function Header() {
           menuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         } md:hidden`}
       >
-        <div className="flex h-full flex-col items-center justify-center gap-8">
+        <div className="flex h-full flex-col items-center justify-center gap-8 px-6 text-center">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -125,6 +123,9 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <div className="mt-6 font-mono text-[11px] uppercase tracking-[0.18em] text-white/45">
+            {siteSettings.location} - {time} EST
+          </div>
         </div>
       </div>
     </>

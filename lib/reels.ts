@@ -6,6 +6,7 @@ import path from "node:path";
 import type { FeaturedReelGroup, ReelVideo } from "@/lib/reel-types";
 
 const REELS_DIR = path.join(process.cwd(), "assets", "Reals");
+const PUBLIC_REELS_DIR = path.join(process.cwd(), "public", "videos");
 
 const posterPool = [
   "/images/cinema-rig.jpg",
@@ -34,15 +35,40 @@ function toId(fileName: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+async function readReelDirectory(directory: string) {
+  try {
+    const fileNames = await readdir(directory);
+
+    return fileNames
+      .filter((fileName) => fileName.toLowerCase().endsWith(".mp4"))
+      .sort((left, right) => left.localeCompare(right));
+  } catch (error) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === "ENOENT"
+    ) {
+      return [];
+    }
+
+    throw error;
+  }
+}
+
 export async function getAllReels(): Promise<ReelVideo[]> {
-  const fileNames = (await readdir(REELS_DIR))
-    .filter((fileName) => fileName.toLowerCase().endsWith(".mp4"))
-    .sort((left, right) => left.localeCompare(right));
+  const assetFileNames = await readReelDirectory(REELS_DIR);
+  const usingAssets = assetFileNames.length > 0;
+  const fileNames = usingAssets
+    ? assetFileNames
+    : await readReelDirectory(PUBLIC_REELS_DIR);
 
   return fileNames.map((fileName, index) => ({
     id: toId(fileName) || `reel-${index + 1}`,
     title: toDisplayTitle(fileName),
-    src: `/reels/${encodeURIComponent(fileName)}`,
+    src: usingAssets
+      ? `/reels/${encodeURIComponent(fileName)}`
+      : `/videos/${encodeURIComponent(fileName)}`,
     posterSrc: posterPool[index % posterPool.length] ?? posterPool[0],
     fileName,
   }));
@@ -50,18 +76,24 @@ export async function getAllReels(): Promise<ReelVideo[]> {
 
 export async function getFeaturedReelGroups(): Promise<FeaturedReelGroup[]> {
   const reels = await getAllReels();
+
+  if (reels.length < 3) {
+    return [];
+  }
+
   const groups: FeaturedReelGroup[] = [];
 
   for (let index = 0; index < 4; index += 1) {
     const start = index * 3;
-    const groupReels = reels.slice(start, start + 3);
+    const groupReels = Array.from(
+      { length: 3 },
+      (_, offset) => reels[(start + offset) % reels.length]!,
+    );
 
-    if (groupReels.length === 3) {
-      groups.push({
-        id: `featured-reel-group-${index + 1}`,
-        reels: groupReels,
-      });
-    }
+    groups.push({
+      id: `featured-reel-group-${index + 1}`,
+      reels: groupReels,
+    });
   }
 
   return groups;

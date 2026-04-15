@@ -22,6 +22,17 @@ export function VideoShowcase() {
   const [soundUnlocked, setSoundUnlocked] = useState(false);
   const [needsGesture, setNeedsGesture] = useState(true);
 
+  const playMutedFallback = async (video: HTMLVideoElement) => {
+    video.muted = true;
+    video.volume = 0;
+
+    try {
+      await video.play();
+    } catch {
+      // Ignore muted autoplay failures and leave the poster visible instead.
+    }
+  };
+
   useLayoutEffect(() => {
     if (!rootRef.current) {
       return;
@@ -356,9 +367,12 @@ export function VideoShowcase() {
         }
         setNeedsGesture(false);
       } catch {
-        if (!cancelled) {
-          setNeedsGesture(true);
+        if (cancelled) {
+          return;
         }
+
+        setNeedsGesture(true);
+        await playMutedFallback(video);
       }
     };
 
@@ -496,15 +510,16 @@ export function VideoShowcase() {
             ref={(element) => {
               wrapperRefs.current[index] = element;
             }}
-            className="video-card-wrap sticky top-0 flex min-h-screen items-center justify-center px-4 py-6 md:px-8"
+                className="video-card-wrap sticky top-0 flex min-h-screen items-center justify-center px-4 py-6 md:px-8"
           >
-            <article className="video-card relative h-[88vh] w-full overflow-hidden rounded-[1.6rem] border border-white/8 bg-black shadow-[0_18px_80px_rgba(0,0,0,0.5)]">
+            <article className="video-card relative h-[72svh] min-h-[34rem] w-full overflow-hidden rounded-[1.35rem] border border-white/8 bg-black shadow-[0_18px_80px_rgba(0,0,0,0.5)] md:h-[88vh] md:rounded-[1.6rem]">
               <div className="video-card-media absolute inset-0">
                 <video
                   ref={(element) => {
                     videoRefs.current[index] = element;
                   }}
                   src={item.src}
+                  poster={item.poster}
                   className="pointer-events-none h-full w-full object-cover"
                   preload="auto"
                   playsInline
@@ -520,18 +535,19 @@ export function VideoShowcase() {
                         video.volume = 1;
                         void video.play().catch(() => {
                           setNeedsGesture(true);
+                          void playMutedFallback(video);
                         });
                       }
                     }
                   }}
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.18)_34%,rgba(0,0,0,0.56)_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.12)_0%,rgba(0,0,0,0.1)_28%,rgba(0,0,0,0.38)_68%,rgba(0,0,0,0.8)_100%)] md:bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.18)_34%,rgba(0,0,0,0.56)_100%)]" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.14),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(167,139,250,0.16),transparent_30%)]" />
               </div>
 
-              <div className="video-card-content relative z-10 flex h-full flex-col justify-between p-5 md:p-8">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/24 px-4 py-2 backdrop-blur-md">
+              <div className="video-card-content relative z-10 flex h-full flex-col justify-between p-4 md:p-8">
+                <div className="flex flex-wrap items-start justify-between gap-2 md:gap-4">
+                  <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/24 px-3 py-2 backdrop-blur-md md:px-4">
                     <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--color-accent)]">
                       Reel {item.id}
                     </span>
@@ -541,19 +557,19 @@ export function VideoShowcase() {
                     </span>
                   </div>
 
-                  <div className="rounded-full border border-white/10 bg-black/24 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/62 backdrop-blur-md">
+                  <div className="rounded-full border border-white/10 bg-black/24 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/62 backdrop-blur-md md:px-4">
                     {activeIndex === index ? "Playing with sound" : "Queued"}
                   </div>
                 </div>
 
-                <div className="max-w-[520px] rounded-[1.35rem] border border-white/10 bg-black/26 p-5 shadow-[0_14px_50px_rgba(0,0,0,0.22)] backdrop-blur-md md:p-6">
+                <div className="w-full max-w-[520px] self-end rounded-[1.15rem] border border-white/10 bg-black/30 p-4 shadow-[0_14px_50px_rgba(0,0,0,0.22)] backdrop-blur-md md:rounded-[1.35rem] md:p-6">
                   <div className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/42">
                     {item.tag}
                   </div>
-                  <h2 className="mt-4 max-w-[9ch] font-display text-[clamp(1.75rem,4vw,3.8rem)] font-bold uppercase leading-[0.94] tracking-[-0.06em] text-white">
+                  <h2 className="mt-3 max-w-[9ch] font-display text-[clamp(1.75rem,8vw,3.8rem)] font-bold uppercase leading-[0.94] tracking-[-0.06em] text-white md:mt-4">
                     {item.title}
                   </h2>
-                  <p className="mt-4 max-w-[34rem] text-sm leading-6 text-white/64 md:text-base md:leading-7">
+                  <p className="mt-3 max-w-[34rem] text-sm leading-6 text-white/64 md:mt-4 md:text-base md:leading-7">
                     {item.description}
                   </p>
 
@@ -568,8 +584,15 @@ export function VideoShowcase() {
                         if (video) {
                           video.muted = false;
                           video.volume = 1;
-                          void video.play();
-                          setNeedsGesture(false);
+                          void video.play().then(
+                            () => {
+                              setNeedsGesture(false);
+                            },
+                            async () => {
+                              setNeedsGesture(true);
+                              await playMutedFallback(video);
+                            },
+                          );
                         }
                       }}
                       className="rounded-full border border-[var(--color-accent)]/45 bg-[var(--color-accent)] px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-black transition hover:brightness-110"
@@ -585,7 +608,7 @@ export function VideoShowcase() {
               </div>
 
               {needsGesture && activeIndex === index ? (
-                <div className="pointer-events-none absolute bottom-6 right-6 z-20 rounded-full border border-white/12 bg-black/55 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.22em] text-white/72 backdrop-blur-md">
+                <div className="pointer-events-none absolute bottom-4 left-4 right-4 z-20 rounded-full border border-white/12 bg-black/55 px-4 py-3 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-white/72 backdrop-blur-md md:bottom-6 md:left-auto md:right-6 md:text-left">
                   Click once if browser blocks sound
                 </div>
               ) : null}

@@ -306,15 +306,19 @@ export function FeaturedDeck({ featuredGroups }: FeaturedDeckProps) {
 
   return (
     <section ref={rootRef} className="relative z-10 pb-20">
-      <div className="sticky top-0 z-20 mx-auto max-w-[1320px] px-5 pt-4 md:px-10 md:pt-6">
-        <div className="flex items-center justify-between gap-4">
-          <div className="pointer-events-none inline-flex rounded-full border border-white/10 bg-black/40 px-4 py-3 backdrop-blur-sm">
-            <SectionTitle primary="Featured" outline="Edits" />
+      <div className="sticky top-0 z-20 mx-auto max-w-[1320px] px-4 pt-4 md:px-10 md:pt-6">
+        <div className="flex items-center justify-between gap-3">
+          <div className="pointer-events-none inline-flex max-w-[calc(100%-8.25rem)] shrink rounded-full border border-white/10 bg-black/40 px-3 py-2.5 backdrop-blur-sm md:max-w-full md:px-4 md:py-3">
+            <SectionTitle
+              primary="Featured"
+              outline="Edits"
+              className="text-[0.56rem] leading-[0.9] md:text-[clamp(2rem,4vw,3.25rem)]"
+            />
           </div>
 
           <Link
             href="/work"
-            className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/45 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.24em] text-white/78 transition hover:border-[var(--color-accent)]/45 hover:text-[var(--color-accent)]"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/10 bg-black/45 px-3.5 py-2.5 font-mono text-[9px] uppercase tracking-[0.2em] text-white/78 transition hover:border-[var(--color-accent)]/45 hover:text-[var(--color-accent)] md:gap-3 md:px-5 md:py-3 md:text-[11px] md:tracking-[0.24em]"
           >
             See More
             <span aria-hidden="true">-&gt;</span>

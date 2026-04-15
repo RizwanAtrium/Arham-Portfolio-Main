@@ -23,6 +23,8 @@ export function HeroScene() {
       return;
     }
 
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
     const context = gsap.context(() => {
       gsap.fromTo(
         ".hero-eyebrow",
@@ -74,7 +76,7 @@ export function HeroScene() {
         { autoAlpha: 1, x: 0, duration: 0.7, ease: "power3.out", delay: 1 },
       );
 
-      if (artboardRef.current && wrapRef.current && canvasRef.current) {
+      if (!isMobile && artboardRef.current && wrapRef.current && canvasRef.current) {
         const overlayTargets = [
           commentRef.current?.parentElement,
           marqueeRef.current,
@@ -163,7 +165,12 @@ export function HeroScene() {
     const marquee = marqueeRef.current;
     const redline = redlineRef.current;
 
-    if (!content || !marquee || !redline) {
+    if (
+      !content ||
+      !marquee ||
+      !redline ||
+      window.matchMedia("(max-width: 767px)").matches
+    ) {
       return;
     }
 
@@ -308,7 +315,10 @@ export function HeroScene() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-[178vh] md:h-[186vh]">
+    <section
+      ref={sectionRef}
+      className="relative min-h-[34rem] md:min-h-[100svh] md:h-[186vh]"
+    >
       <div className="camera-track">
         <div ref={artboardRef} className="artboard hero-artboard">
           <canvas
