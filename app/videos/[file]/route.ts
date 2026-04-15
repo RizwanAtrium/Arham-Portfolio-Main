@@ -3,7 +3,7 @@ import { stat } from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
 
-import { getDriveShowcaseUrl } from "@/lib/drive-media";
+import { getDriveShowcaseUrl, proxyDriveVideo } from "@/lib/drive-media";
 
 const VIDEOS_DIR = path.resolve(process.cwd(), "public", "videos");
 
@@ -42,12 +42,7 @@ export async function GET(
       return new Response("Not found", { status: 404 });
     }
 
-    return new Response(null, {
-      status: 307,
-      headers: {
-        Location: driveUrl,
-      },
-    });
+    return proxyDriveVideo(request, driveUrl, fileName);
   }
 
   const rangeHeader = request.headers.get("range");

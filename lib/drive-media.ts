@@ -4,9 +4,22 @@ type DriveHostedFile = {
 };
 
 const GOOGLE_DRIVE_DOWNLOAD_BASE = "https://drive.usercontent.google.com/download";
+const DRIVE_VIDEO_HEADER_NAMES = [
+  "accept-ranges",
+  "content-length",
+  "content-range",
+  "content-type",
+  "etag",
+  "last-modified",
+] as const;
 
 function buildDriveDownloadUrl(fileId: string) {
   return `${GOOGLE_DRIVE_DOWNLOAD_BASE}?id=${encodeURIComponent(fileId)}&export=download`;
+}
+
+function toInlineDisposition(fileName: string) {
+  const safeFileName = fileName.replace(/["\\\r\n]/g, "");
+  return `inline; filename="${safeFileName}"`;
 }
 
 const showcaseVideoIds: Record<string, string> = {
@@ -94,4 +107,49 @@ export function getDriveShowcaseUrl(fileName: string) {
 export function getDriveReelUrl(fileName: string) {
   const fileId = driveReelFileIdByName.get(fileName);
   return fileId ? buildDriveDownloadUrl(fileId) : null;
+}
+
+export async function proxyDriveVideo(
+  request: Request,
+  driveUrl: string,
+  fileName: string,
+) {
+  const requestHeaders = new Headers();
+  const range = request.headers.get("range");
+
+  if (range) {
+    requestHeaders.set("range", range);
+  }
+
+  const driveResponse = await fetch(driveUrl, {
+    headers: requestHeaders,
+    redirect: "follow",
+  });
+
+  if (!driveResponse.ok && driveResponse.status !== 206) {
+    return new Response("Remote video unavailable", { status: driveResponse.status });
+  }
+
+  const responseHeaders = new Headers({
+    "Cache-Control": "public, max-age=3600",
+    "Content-Disposition": toInlineDisposition(fileName),
+    "Content-Type": driveResponse.headers.get("content-type") ?? "video/mp4",
+  });
+
+  for (const headerName of DRIVE_VIDEO_HEADER_NAMES) {
+    const headerValue = driveResponse.headers.get(headerName);
+
+    if (headerValue) {
+      responseHeaders.set(headerName, headerValue);
+    }
+  }
+
+  if (!responseHeaders.has("accept-ranges")) {
+    responseHeaders.set("accept-ranges", "bytes");
+  }
+
+  return new Response(driveResponse.body, {
+    status: driveResponse.status,
+    headers: responseHeaders,
+  });
 }

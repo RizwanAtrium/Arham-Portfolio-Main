@@ -149,8 +149,8 @@ export const siteSettings = {
   title: "Arham Mansoor | AI Video Editor",
   description:
     "AI video editor and video editor crafting paid ads, reels, launch films, and social edits that hold attention.",
-  location: "Charlotte, NC",
-  timezone: "America/New_York",
+  location: "Karachi, Pakistan",
+  timezone: "Asia/Karachi",
   email: "hello@arhammansoor.com",
   socialLinks: [
     {

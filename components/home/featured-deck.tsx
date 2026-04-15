@@ -312,7 +312,7 @@ export function FeaturedDeck({ featuredGroups }: FeaturedDeckProps) {
             <SectionTitle
               primary="Featured"
               outline="Edits"
-              className="text-[0.56rem] leading-[0.9] md:text-[clamp(2rem,4vw,3.25rem)]"
+              className="text-[clamp(1.5rem,4vw,3.25rem)] leading-[0.9] md:text-[clamp(2rem,4vw,3.25rem)]"
             />
           </div>
 

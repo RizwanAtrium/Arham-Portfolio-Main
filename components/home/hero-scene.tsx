@@ -358,7 +358,7 @@ export function HeroScene() {
                 ref={contentRef}
                 className="flex flex-col items-center text-center transition-transform duration-300"
               >
-                <span className="hero-eyebrow hero-ic-eye">
+                <span className="hero-eyebrow hero-ic-eye md:mt-5">
                   {siteSettings.heroEyebrow}
                 </span>
 
