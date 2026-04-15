@@ -2,53 +2,53 @@ const privacySections = [
   {
     heading: "What this site collects",
     paragraphs: [
-      "When you visit this site, analytics tools and standard server logs may collect technical data such as your IP address, approximate location, browser version, device category, session identifiers, pages viewed, and time spent on page.",
-      "This information helps improve the portfolio experience. There are no accounts, logins, or registration flows on this site.",
+      "When you visit this site, standard analytics and server logs may collect technical information such as browser type, device category, approximate location, pages viewed, and time spent on page.",
+      "This information is used to understand how the portfolio performs and how visitors move through the work.",
     ],
     bullets: [
-      "IP address",
-      "Approximate geolocation derived from IP",
+      "IP address and approximate region",
       "Browser and device information",
       "Pages viewed and time on page",
+      "Referral source or landing page data",
     ],
   },
   {
-    heading: "AI chat data",
+    heading: "Contact and inquiries",
     paragraphs: [
-      "The original site includes an AI-powered chat interface. When it is used, the question, response, timestamp, referring URL, and device context may be logged to improve the quality of future responses.",
-      "That data is not sold or shared for advertising.",
+      "If you contact me by email or through a linked social profile, the information you provide is used only to respond to your inquiry or discuss project work.",
+      "I do not sell inquiry data or use it for third-party advertising.",
     ],
   },
   {
-    heading: "Voice chat data",
+    heading: "Project material",
     paragraphs: [
-      "If voice mode is enabled, browser speech recognition can transcribe microphone input locally before sending the transcribed text as a regular chat message.",
-      "Generated voice responses may rely on a third-party text-to-speech provider for playback.",
+      "If files, briefs, footage references, or feedback are shared during a project discussion, that material is treated as private working material and used only for production, review, and delivery.",
+      "Any retained files are kept only as long as needed for active collaboration, archival, or agreed project support.",
     ],
   },
   {
     heading: "Analytics tools",
     paragraphs: [
-      "The reference site uses analytics services such as Google Analytics 4 and FullStory for aggregate usage insights and session-level UX diagnostics.",
+      "Analytics tools may be used for aggregate traffic insights, performance monitoring, and basic UX diagnostics across the portfolio.",
     ],
   },
   {
     heading: "Cookies",
     paragraphs: [
-      "Analytics tools may use cookies or similar technologies. These are intended for measurement and usability analysis rather than advertising.",
+      "Analytics tools may use cookies or similar technologies. These are intended for measurement and site improvement rather than ad targeting.",
     ],
   },
   {
     heading: "Your rights",
     paragraphs: [
       "If privacy laws in your region apply, you may have rights to request access, correction, deletion, restriction, objection, or portability for data associated with you.",
-      "For the original portfolio, requests are handled through the contact email listed in the footer.",
+      "Requests related to personal data can be made through the contact email listed in the footer.",
     ],
   },
   {
     heading: "Data retention",
     paragraphs: [
-      "Analytics and chat logs are retained only as long as needed for portfolio analytics and quality improvement, then deleted according to the original site's retention rules.",
+      "Analytics data and inquiry records are retained only as long as needed for portfolio performance review, communication history, and legitimate business follow-up.",
     ],
   },
   {
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
           PRIVACY
         </h1>
         <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-white/42">
-          Last updated: March 2026
+          Last updated: April 2026
         </p>
       </section>
 

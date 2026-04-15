@@ -112,7 +112,7 @@ export function FeaturedDeck() {
     <section ref={rootRef} className="relative z-10 pb-24">
       <div className="sticky top-0 z-20 mx-auto max-w-[1440px] px-5 pt-6 md:px-10 md:pt-10">
         <div className="pointer-events-none inline-flex rounded-full border border-white/10 bg-black/40 px-4 py-3 backdrop-blur-sm">
-          <SectionTitle primary="Featured" outline="Work" />
+          <SectionTitle primary="Featured" outline="Edits" />
         </div>
       </div>
 

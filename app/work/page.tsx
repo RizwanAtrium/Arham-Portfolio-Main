@@ -85,7 +85,7 @@ export default function WorkPage() {
       </section>
 
       <section className="page-frame mt-20 md:mt-28">
-        <SectionTitle primary="Built" outline="To Last" />
+        <SectionTitle primary="Edited" outline="To Convert" />
       </section>
     </div>
   );

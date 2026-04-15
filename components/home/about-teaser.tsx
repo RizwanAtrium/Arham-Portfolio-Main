@@ -48,17 +48,17 @@ export function AboutTeaser() {
       <div className="mx-auto max-w-[880px] px-5 md:px-10">
         <h2 className="font-display text-[clamp(2.3rem,6vw,5.5rem)] font-bold uppercase leading-[0.94] tracking-[-0.06em]">
           <span className="block overflow-hidden">
-            <span className="about-teaser-line block">THE ARCHITECT</span>
+            <span className="about-teaser-line block">THE EDITOR</span>
           </span>
           <span className="block overflow-hidden">
             <span className="about-teaser-line block">
-              BEHIND THE <span className="outline-copy">WORK.</span>
+              BEHIND THE <span className="outline-copy">MOTION.</span>
             </span>
           </span>
         </h2>
         <p className="about-teaser-copy mx-auto mt-8 max-w-2xl text-lg leading-8 text-white/56">
-          Systems that scale. Typography that respects the reader. Interactions
-          that feel inevitable.
+          AI-assisted workflows, sharper pacing, cleaner captions, and premium
+          finishing built for brands, founders, and social-first campaigns.
         </p>
         <Link
           href="/about"

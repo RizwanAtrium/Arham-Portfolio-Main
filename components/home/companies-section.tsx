@@ -266,9 +266,9 @@ export function CompaniesSection() {
           ref={headerRef}
           className="mb-12 flex flex-col gap-4 border-b border-white/6 pb-5 md:flex-row md:items-end md:justify-between"
         >
-          <SectionTitle primary="Worked" outline="With" />
+          <SectionTitle primary="Edited" outline="For" />
           <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-white/45">
-            Enterprise and Global Partners
+            Brands, founders, podcasts, and agency teams
           </span>
         </div>
 
@@ -276,8 +276,8 @@ export function CompaniesSection() {
           ref={colsRef}
           className="mb-3 hidden grid-cols-[1fr_220px] px-5 font-mono text-[10px] uppercase tracking-[0.24em] text-white/35 md:grid"
         >
-          <span>Partner</span>
-          <span>Sector</span>
+          <span>Client</span>
+          <span>Format</span>
         </div>
 
         <div className="border-y border-white/6">

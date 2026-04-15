@@ -9,7 +9,7 @@ export default function AboutPage() {
         <div className="space-y-8">
           <div>
             <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-[var(--color-accent)]">
-              01 / The Drive
+              01 / The Edit Mindset
             </span>
             <h1 className="mt-4 font-display text-[clamp(4rem,11vw,8rem)] font-bold uppercase leading-[0.86] tracking-[-0.08em]">
               ABOUT

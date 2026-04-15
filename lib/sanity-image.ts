@@ -13,7 +13,8 @@ function appendParams(url: string, options?: ImageOptions) {
     return url;
   }
 
-  const nextUrl = new URL(url);
+  const isRelative = url.startsWith("/");
+  const nextUrl = new URL(url, isRelative ? "http://local.asset" : undefined);
 
   if (options.width) {
     nextUrl.searchParams.set("w", String(options.width));
@@ -28,7 +29,7 @@ function appendParams(url: string, options?: ImageOptions) {
   }
 
   nextUrl.searchParams.set("auto", "format");
-  return nextUrl.toString();
+  return isRelative ? `${nextUrl.pathname}${nextUrl.search}` : nextUrl.toString();
 }
 
 function refToImageUrl(ref: string) {
@@ -64,4 +65,3 @@ export function sanityImageUrl(source: ImageSource, options?: ImageOptions) {
 
   return null;
 }
-
