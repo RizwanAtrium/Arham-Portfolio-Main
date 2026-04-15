@@ -573,10 +573,6 @@ export function VideoShowcase() {
             >
               <article className="video-card relative h-[72svh] min-h-[34rem] w-full overflow-hidden rounded-[1.35rem] border border-white/8 bg-black shadow-[0_18px_80px_rgba(0,0,0,0.5)] md:h-[88vh] md:rounded-[1.6rem]">
                 <div className="video-card-media absolute inset-0">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center opacity-45"
-                    style={{ backgroundImage: `url(${item.poster})` }}
-                  />
                   <video
                     ref={(element) => {
                       videoRefs.current[index] = element;

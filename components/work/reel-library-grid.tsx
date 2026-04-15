@@ -132,11 +132,6 @@ function ReelCard({ isUnmuted, onToggleAudio, reel }: ReelCardProps) {
       className="overflow-hidden rounded-[1rem] border border-white/8 bg-[var(--color-surface)]"
     >
       <div className="relative h-[52vh] overflow-hidden bg-black md:h-[82vh]">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-40"
-          style={{ backgroundImage: `url(${reel.posterSrc})` }}
-        />
-
         <video
           ref={videoRef}
           src={hasEnteredView ? reel.src : undefined}
