@@ -13,6 +13,11 @@ const DRIVE_VIDEO_HEADER_NAMES = [
   "last-modified",
 ] as const;
 
+const DRIVE_WARNING_FORM_PATTERN =
+  /<form id="download-form" action="([^"]+)" method="get">([\s\S]*?)<\/form>/i;
+const DRIVE_WARNING_INPUT_PATTERN =
+  /<input[^>]+type="hidden"[^>]+name="([^"]+)"[^>]+value="([^"]*)"/gi;
+
 function buildDriveDownloadUrl(fileId: string) {
   return `${GOOGLE_DRIVE_DOWNLOAD_BASE}?id=${encodeURIComponent(fileId)}&export=download`;
 }
@@ -104,22 +109,74 @@ export function getDriveReelUrl(fileName: string) {
   return fileId ? buildDriveDownloadUrl(fileId) : null;
 }
 
+function buildDriveRequestHeaders(request: Request) {
+  const headers = new Headers();
+  const range = request.headers.get("range");
+
+  if (range) {
+    headers.set("range", range);
+  }
+
+  return headers;
+}
+
+function isDriveWarningHtml(response: Response) {
+  const contentType = response.headers.get("content-type") ?? "";
+  return contentType.includes("text/html");
+}
+
+function buildConfirmedDownloadUrl(warningHtml: string, responseUrl: string) {
+  const formMatch = warningHtml.match(DRIVE_WARNING_FORM_PATTERN);
+
+  if (!formMatch) {
+    return null;
+  }
+
+  const [, action, formMarkup] = formMatch;
+  const confirmedUrl = new URL(action, responseUrl);
+  const hiddenInputMatches = formMarkup.matchAll(DRIVE_WARNING_INPUT_PATTERN);
+
+  for (const [, name, value] of hiddenInputMatches) {
+    confirmedUrl.searchParams.set(name, value);
+  }
+
+  return confirmedUrl.toString();
+}
+
+async function fetchDriveStream(request: Request, driveUrl: string) {
+  const requestHeaders = buildDriveRequestHeaders(request);
+  const initialResponse = await fetch(driveUrl, {
+    headers: requestHeaders,
+    redirect: "follow",
+  });
+
+  if (!isDriveWarningHtml(initialResponse)) {
+    return initialResponse;
+  }
+
+  const warningHtml = await initialResponse.text();
+  const confirmedUrl = buildConfirmedDownloadUrl(warningHtml, initialResponse.url);
+
+  if (!confirmedUrl) {
+    return null;
+  }
+
+  return fetch(confirmedUrl, {
+    headers: requestHeaders,
+    redirect: "follow",
+  });
+}
+
 export async function proxyDriveVideo(
   request: Request,
   driveUrl: string,
   _fileName: string,
 ) {
-  const requestHeaders = new Headers();
-  const range = request.headers.get("range");
+  const driveResponse = await fetchDriveStream(request, driveUrl);
 
-  if (range) {
-    requestHeaders.set("range", range);
+  if (!driveResponse) {
+    return new Response("Remote video unavailable", { status: 502 });
   }
-
-  const driveResponse = await fetch(driveUrl, {
-    headers: requestHeaders,
-    redirect: "follow",
-  });
 
   if (!driveResponse.ok && driveResponse.status !== 206) {
     return new Response("Remote video unavailable", { status: driveResponse.status });
