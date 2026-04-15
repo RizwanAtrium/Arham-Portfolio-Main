@@ -19,6 +19,25 @@ type VideoShowcaseItem = {
   meta: string;
 };
 
+export type ReelItem = {
+  id: string;
+  title: string;
+  tag: string;
+  src: string;
+  meta: string;
+  poster: SanityImage;
+};
+
+export type FeaturedEdit = {
+  id: string;
+  slug: string;
+  tag: string;
+  title: string;
+  description: string;
+  metrics: ProjectMetric[];
+  reels: ReelItem[];
+};
+
 type Company = {
   _id: string;
   name: string;
@@ -638,6 +657,128 @@ export const projects: Project[] = [
 ];
 
 export const featuredProjects = projects.slice(0, 4);
+
+export const allReels: ReelItem[] = [
+  {
+    id: "jewellery-brand",
+    title: "Jewellery Brand Spot",
+    tag: "Luxury Ad",
+    src: "/videos/jewellery-brand.mp4",
+    meta: "Premium product-led ad cut",
+    poster: localImage("/images/cinema-rig.jpg"),
+  },
+  {
+    id: "patek-motion",
+    title: "Watch Motion Reel",
+    tag: "Product Motion",
+    src: "/videos/patek-motion.mp4",
+    meta: "High-contrast watch edit",
+    poster: localImage("/images/camera-monitor-desk.jpg"),
+  },
+  {
+    id: "ravea-lipstick",
+    title: "Beauty Campaign Reel",
+    tag: "Beauty Edit",
+    src: "/videos/ravea-lipstick.mp4",
+    meta: "Beauty launch-focused social reel",
+    poster: localImage("/images/laptop-editing-screen.jpg"),
+  },
+  {
+    id: "debonair-final",
+    title: "Editorial Fashion Cut",
+    tag: "Editorial",
+    src: "/videos/debonair-final.mp4",
+    meta: "Fashion-forward pacing and polish",
+    poster: localImage("/images/filmmaker-desk.jpg"),
+  },
+  {
+    id: "cheerful-moments",
+    title: "Lifestyle Story Reel",
+    tag: "Lifestyle",
+    src: "/videos/cheerful-moments.mp4",
+    meta: "Warm, upbeat branded storytelling",
+    poster: localImage("/images/gimbal-setup.jpg"),
+  },
+  {
+    id: "crime-documentary",
+    title: "Narrative Documentary Teaser",
+    tag: "Narrative",
+    src: "/videos/crime-documentary.mp4",
+    meta: "Documentary tone shaped for scroll",
+    poster: localImage("/images/podcast-video-desk.jpg"),
+  },
+  {
+    id: "shaljit-ad",
+    title: "Short Commercial Spot",
+    tag: "Promo",
+    src: "/videos/shaljit-ad.mp4",
+    meta: "Tighter promo cut for fast delivery",
+    poster: localImage("/images/camera-table.jpg"),
+  },
+];
+
+export const featuredEdits: FeaturedEdit[] = [
+  {
+    id: "featured-ai-ads",
+    slug: "featured-ai-ads",
+    tag: "AI Ad Creative",
+    title: "AI Ads That Still Feel Human",
+    description:
+      "Three reel directions for paid social, product launches, and conversion-driven edits that need premium pacing without slowing production down.",
+    metrics: [
+      { value: "24-48h", label: "First Cut Window" },
+      { value: "3 Formats", label: "Core Aspect Ratios" },
+      { value: "Hook-First", label: "Edit Structure" },
+      { value: "AI + Human", label: "Workflow Blend" },
+    ],
+    reels: [allReels[0], allReels[6], allReels[1]],
+  },
+  {
+    id: "featured-creator-reels",
+    slug: "featured-creator-reels",
+    tag: "Creator Reels",
+    title: "Personal Brand Reels With Retention",
+    description:
+      "A focused reel stack for creators and founders where the opening line, caption rhythm, and pacing carry the whole watch-through.",
+    metrics: [
+      { value: "9:16", label: "Primary Delivery" },
+      { value: "Clean Captions", label: "Readable on Mobile" },
+      { value: "Fast Turn", label: "Repeatable Publishing" },
+      { value: "Brand Safe", label: "Consistent Visual Tone" },
+    ],
+    reels: [allReels[4], allReels[3], allReels[2]],
+  },
+  {
+    id: "featured-podcast-cuts",
+    slug: "featured-podcast-cuts",
+    tag: "Podcast Editing",
+    title: "Podcast Episodes Turned Into Daily Content",
+    description:
+      "A reel set built around cutdowns, teasers, and narrative social moments so one recording can feed multiple publishing windows.",
+    metrics: [
+      { value: "1 Episode", label: "Multiple Clip Outputs" },
+      { value: "Audio Clean", label: "Speech Forward" },
+      { value: "Captioned", label: "Social Ready" },
+      { value: "Batchable", label: "Weekly Workflow" },
+    ],
+    reels: [allReels[5], allReels[4], allReels[6]],
+  },
+  {
+    id: "featured-agency-support",
+    slug: "featured-agency-support",
+    tag: "Agency Support",
+    title: "White-Label Editing For Agencies",
+    description:
+      "Three polished reel directions showing how overflow editing, finishing, and export cleanup can stay fast without looking templated.",
+    metrics: [
+      { value: "White-Label", label: "Behind-the-Scenes Support" },
+      { value: "Multi-Use", label: "Paid + Organic + Pitch" },
+      { value: "Revision Ready", label: "Feedback-Friendly Workflow" },
+      { value: "Consistent", label: "Quality Under Deadline" },
+    ],
+    reels: [allReels[1], allReels[0], allReels[2]],
+  },
+];
 
 export const aboutProfile: AboutProfile = {
   openingTitle: "The editor behind the momentum",
