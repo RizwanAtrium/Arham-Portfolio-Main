@@ -17,11 +17,6 @@ function buildDriveDownloadUrl(fileId: string) {
   return `${GOOGLE_DRIVE_DOWNLOAD_BASE}?id=${encodeURIComponent(fileId)}&export=download`;
 }
 
-function toInlineDisposition(fileName: string) {
-  const safeFileName = fileName.replace(/["\\\r\n]/g, "");
-  return `inline; filename="${safeFileName}"`;
-}
-
 const showcaseVideoIds: Record<string, string> = {
   "cheerful-moments.mp4": "14BHpSGHXVMhpP06OuxjzCUEoDENAjVkB",
   "crime-documentary.mp4": "1xEqjcyLltzot5TyXx9QrgbU6e3HvNkJJ",
@@ -112,7 +107,7 @@ export function getDriveReelUrl(fileName: string) {
 export async function proxyDriveVideo(
   request: Request,
   driveUrl: string,
-  fileName: string,
+  _fileName: string,
 ) {
   const requestHeaders = new Headers();
   const range = request.headers.get("range");
@@ -132,7 +127,7 @@ export async function proxyDriveVideo(
 
   const responseHeaders = new Headers({
     "Cache-Control": "public, max-age=3600",
-    "Content-Disposition": toInlineDisposition(fileName),
+    "Content-Disposition": "inline",
     "Content-Type": driveResponse.headers.get("content-type") ?? "video/mp4",
   });
 
