@@ -2,6 +2,79 @@ import { aboutProfile } from "@/lib/site-data";
 import { sanityImageUrl } from "@/lib/sanity-image";
 import { SectionTitle } from "@/components/shared/section-title";
 
+function ToolkitIcon({ name }: { name: string }) {
+  const sharedProps = {
+    "aria-hidden": true,
+    viewBox: "0 0 24 24",
+    className: "h-7 w-7 fill-none stroke-current text-white/88",
+    strokeWidth: 1.7,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+
+  switch (name) {
+    case "Freepik Spaces":
+      return (
+        <svg {...sharedProps}>
+          <path d="m12 4 1.8 4.7L18.5 10l-4.7 1.3L12 16l-1.8-4.7L5.5 10l4.7-1.3L12 4Z" />
+          <path d="m18.2 15.2 0.7 1.8 1.8 0.7-1.8 0.7-0.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8Z" />
+        </svg>
+      );
+    case "HeyGen":
+      return (
+        <svg {...sharedProps}>
+          <rect x="4.5" y="5" width="15" height="14" rx="3" />
+          <circle cx="12" cy="10" r="2.1" />
+          <path d="M8.5 15.5c1.2-1.5 2.2-2.1 3.5-2.1s2.3 0.6 3.5 2.1" />
+        </svg>
+      );
+    case "Synthesia":
+      return (
+        <svg {...sharedProps}>
+          <rect x="4" y="6" width="16" height="12" rx="2.5" />
+          <path d="m10 9.5 5 2.5-5 2.5Z" />
+          <path d="M7 4.5v3" />
+          <path d="M17 4.5v3" />
+        </svg>
+      );
+    case "HiggsField":
+      return (
+        <svg {...sharedProps}>
+          <circle cx="12" cy="12" r="3.2" />
+          <path d="M12 4.5v3" />
+          <path d="M12 16.5v3" />
+          <path d="M4.5 12h3" />
+          <path d="M16.5 12h3" />
+          <path d="m6.8 6.8 2.1 2.1" />
+          <path d="m15.1 15.1 2.1 2.1" />
+        </svg>
+      );
+    case "Kling":
+      return (
+        <svg {...sharedProps}>
+          <path d="M7 6.5h10" />
+          <path d="M7 17.5h10" />
+          <path d="m9 9 6 3-6 3Z" />
+        </svg>
+      );
+    case "Veo 3.1":
+      return (
+        <svg {...sharedProps}>
+          <path d="m5.5 8.5 4 7 4-7 4 7" />
+          <path d="M5 18.5h14" />
+        </svg>
+      );
+    default:
+      return (
+        <svg {...sharedProps}>
+          <circle cx="12" cy="12" r="7" />
+          <path d="M12 8v8" />
+          <path d="M8 12h8" />
+        </svg>
+      );
+  }
+}
+
 export default function AboutPage() {
   return (
     <div className="pb-20 pt-28 md:pb-32 md:pt-36">
@@ -158,7 +231,7 @@ export default function AboutPage() {
                 {item.icon ? (
                   <img src={item.icon} alt={item.name} className="h-7 w-7 object-contain" />
                 ) : (
-                  <span className="font-display text-2xl">+</span>
+                  <ToolkitIcon name={item.name} />
                 )}
               </div>
               <h2 className="mt-5 font-display text-2xl font-bold tracking-[-0.04em]">
