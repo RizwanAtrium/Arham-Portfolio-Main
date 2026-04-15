@@ -8,6 +8,8 @@ import { siteSettings } from "@/lib/site-data";
 
 gsap.registerPlugin(ScrollTrigger);
 
+type VideoLoadState = "idle" | "loading" | "ready" | "error";
+
 export function VideoShowcase() {
   const rootRef = useRef<HTMLElement | null>(null);
   const shellRef = useRef<HTMLDivElement | null>(null);
@@ -19,7 +21,13 @@ export function VideoShowcase() {
   const activeIndexRef = useRef(-1);
   const playbackRunRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [loadedVideoIndices, setLoadedVideoIndices] = useState<number[]>([]);
   const [soundUnlocked, setSoundUnlocked] = useState(false);
+  const [videoLoadStates, setVideoLoadStates] = useState<Record<number, VideoLoadState>>(() =>
+    Object.fromEntries(
+      siteSettings.videoShowcase.map((_, index) => [index, "idle" as VideoLoadState]),
+    ),
+  );
   const [needsGesture, setNeedsGesture] = useState(true);
 
   const playMutedFallback = async (video: HTMLVideoElement) => {
@@ -31,6 +39,28 @@ export function VideoShowcase() {
     } catch {
       // Ignore muted autoplay failures and leave the poster visible instead.
     }
+  };
+
+  const ensureVideosLoaded = (indices: number[]) => {
+    setLoadedVideoIndices((current) => {
+      const next = new Set(current);
+
+      indices
+        .filter((index) => index >= 0 && index < siteSettings.videoShowcase.length)
+        .forEach((index) => next.add(index));
+
+      if (next.size === current.length) {
+        return current;
+      }
+
+      return Array.from(next).sort((left, right) => left - right);
+    });
+  };
+
+  const updateVideoLoadState = (index: number, nextState: VideoLoadState) => {
+    setVideoLoadStates((current) =>
+      current[index] === nextState ? current : { ...current, [index]: nextState },
+    );
   };
 
   useLayoutEffect(() => {
@@ -337,6 +367,14 @@ export function VideoShowcase() {
   }, [activeIndex]);
 
   useEffect(() => {
+    if (activeIndex < 0) {
+      return;
+    }
+
+    ensureVideosLoaded([activeIndex - 1, activeIndex, activeIndex + 1]);
+  }, [activeIndex]);
+
+  useEffect(() => {
     const runId = ++playbackRunRef.current;
 
     const stopAllVideos = () => {
@@ -396,9 +434,24 @@ export function VideoShowcase() {
             return;
           }
 
+          if (!loadedVideoIndices.includes(index) || videoLoadStates[index] === "error") {
+            video.pause();
+            return;
+          }
+
           video.loop = false;
           video.playsInline = true;
           video.preload = "auto";
+
+          if (videoLoadStates[index] !== "ready") {
+            try {
+              video.load();
+            } catch {
+              // Ignore load errors while the active source is attaching.
+            }
+
+            return;
+          }
 
           if (video.readyState < 2) {
             try {
@@ -428,7 +481,7 @@ export function VideoShowcase() {
     return () => {
       cancelled = true;
     };
-  }, [activeIndex, soundUnlocked]);
+  }, [activeIndex, loadedVideoIndices, soundUnlocked, videoLoadStates]);
 
   useEffect(() => {
     if (soundUnlocked || activeIndex < 0) {
@@ -504,46 +557,85 @@ export function VideoShowcase() {
         ref={shellRef}
         className="relative rounded-t-[2.2rem] bg-[linear-gradient(180deg,rgba(5,5,5,0.18)_0%,rgba(5,5,5,0.78)_14%,rgba(5,5,5,1)_34%)]"
       >
-        {siteSettings.videoShowcase.map((item, index) => (
-          <div
-            key={item.id}
-            ref={(element) => {
-              wrapperRefs.current[index] = element;
-            }}
-                className="video-card-wrap sticky top-0 flex min-h-screen items-center justify-center px-4 py-6 md:px-8"
-          >
-            <article className="video-card relative h-[72svh] min-h-[34rem] w-full overflow-hidden rounded-[1.35rem] border border-white/8 bg-black shadow-[0_18px_80px_rgba(0,0,0,0.5)] md:h-[88vh] md:rounded-[1.6rem]">
-              <div className="video-card-media absolute inset-0">
-                <video
-                  ref={(element) => {
-                    videoRefs.current[index] = element;
-                  }}
-                  src={item.src}
-                  poster={item.poster}
-                  className="pointer-events-none h-full w-full object-cover"
-                  preload="auto"
-                  playsInline
-                  controls={false}
-                  disablePictureInPicture
-                  controlsList="nodownload noplaybackrate noremoteplayback nofullscreen"
-                  onLoadedData={() => {
-                    if (index === activeIndexRef.current && sectionActiveRef.current) {
-                      const video = videoRefs.current[index];
+        {siteSettings.videoShowcase.map((item, index) => {
+          const hasLoadedSource = loadedVideoIndices.includes(index);
+          const loadState = videoLoadStates[index] ?? "idle";
+          const isLoading = hasLoadedSource && loadState !== "ready" && loadState !== "error";
+          const showError = loadState === "error";
 
-                      if (video) {
-                        video.muted = false;
-                        video.volume = 1;
-                        void video.play().catch(() => {
-                          setNeedsGesture(true);
-                          void playMutedFallback(video);
-                        });
+          return (
+            <div
+              key={item.id}
+              ref={(element) => {
+                wrapperRefs.current[index] = element;
+              }}
+              className="video-card-wrap sticky top-0 flex min-h-screen items-center justify-center px-4 py-6 md:px-8"
+            >
+              <article className="video-card relative h-[72svh] min-h-[34rem] w-full overflow-hidden rounded-[1.35rem] border border-white/8 bg-black shadow-[0_18px_80px_rgba(0,0,0,0.5)] md:h-[88vh] md:rounded-[1.6rem]">
+                <div className="video-card-media absolute inset-0">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center opacity-45"
+                    style={{ backgroundImage: `url(${item.poster})` }}
+                  />
+                  <video
+                    ref={(element) => {
+                      videoRefs.current[index] = element;
+                    }}
+                    src={hasLoadedSource ? item.src : undefined}
+                    poster={item.poster}
+                    className={`pointer-events-none h-full w-full object-cover transition-opacity duration-300 ${
+                      loadState === "ready" ? "opacity-100" : "opacity-0"
+                    }`}
+                    preload={activeIndex === index ? "metadata" : "none"}
+                    playsInline
+                    controls={false}
+                    disablePictureInPicture
+                    controlsList="nodownload noplaybackrate noremoteplayback nofullscreen"
+                    onLoadStart={() => {
+                      updateVideoLoadState(index, "loading");
+                    }}
+                    onLoadedData={() => {
+                      updateVideoLoadState(index, "ready");
+
+                      if (index === activeIndexRef.current && sectionActiveRef.current) {
+                        const video = videoRefs.current[index];
+
+                        if (video) {
+                          video.muted = false;
+                          video.volume = 1;
+                          void video.play().catch(() => {
+                            setNeedsGesture(true);
+                            void playMutedFallback(video);
+                          });
+                        }
                       }
-                    }
-                  }}
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.12)_0%,rgba(0,0,0,0.1)_28%,rgba(0,0,0,0.38)_68%,rgba(0,0,0,0.8)_100%)] md:bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.18)_34%,rgba(0,0,0,0.56)_100%)]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.14),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(167,139,250,0.16),transparent_30%)]" />
-              </div>
+                    }}
+                    onError={() => {
+                      updateVideoLoadState(index, "error");
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.12)_0%,rgba(0,0,0,0.1)_28%,rgba(0,0,0,0.38)_68%,rgba(0,0,0,0.8)_100%)] md:bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.18)_34%,rgba(0,0,0,0.56)_100%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.14),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(167,139,250,0.16),transparent_30%)]" />
+                  <div
+                    className={`absolute inset-0 transition-opacity duration-300 ${
+                      loadState === "ready" ? "pointer-events-none opacity-0" : "opacity-100"
+                    }`}
+                  >
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(0,0,0,0.74)_100%)]" />
+
+                    {isLoading ? (
+                      <div className="absolute inset-0 animate-pulse bg-[linear-gradient(115deg,rgba(255,255,255,0.03)_10%,rgba(255,255,255,0.12)_35%,rgba(255,255,255,0.03)_60%)]" />
+                    ) : null}
+
+                    {showError ? (
+                      <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+                        <div className="max-w-[18rem] rounded-full border border-white/12 bg-black/55 px-5 py-3 font-mono text-[10px] uppercase tracking-[0.22em] text-white/62 backdrop-blur-md">
+                          Video unavailable
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
 
               <div className="video-card-content relative z-10 flex h-full flex-col justify-between p-4 md:p-8">
                 <div className="flex items-start justify-between gap-2 md:gap-4">
@@ -573,6 +665,7 @@ export function VideoShowcase() {
                     <button
                       type="button"
                       onClick={() => {
+                        ensureVideosLoaded([index]);
                         setActiveIndex(index);
                         setSoundUnlocked(true);
                         const video = videoRefs.current[index];
@@ -591,7 +684,8 @@ export function VideoShowcase() {
                           );
                         }
                       }}
-                      className="rounded-full border border-[var(--color-accent)]/45 bg-[var(--color-accent)] px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-black transition hover:brightness-110"
+                      disabled={showError || loadState !== "ready"}
+                      className="rounded-full border border-[var(--color-accent)]/45 bg-[var(--color-accent)] px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-black transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-45"
                     >
                       Sound On
                     </button>
@@ -604,7 +698,8 @@ export function VideoShowcase() {
               </div>
             </article>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       <div
