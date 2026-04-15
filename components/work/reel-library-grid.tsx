@@ -125,6 +125,7 @@ function ReelCard({ isUnmuted, onToggleAudio, reel }: ReelCardProps) {
 
   const isLoading = hasEnteredView && playbackState !== "ready" && playbackState !== "error";
   const showError = playbackState === "error";
+  const showPoster = playbackState !== "ready";
 
   return (
     <article
@@ -132,6 +133,16 @@ function ReelCard({ isUnmuted, onToggleAudio, reel }: ReelCardProps) {
       className="overflow-hidden rounded-[1rem] border border-white/8 bg-[var(--color-surface)]"
     >
       <div className="relative h-[52vh] overflow-hidden bg-black md:h-[82vh]">
+        <img
+          src={reel.posterSrc}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+            showPoster ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
         <video
           ref={videoRef}
           src={hasEnteredView ? reel.src : undefined}
@@ -154,17 +165,19 @@ function ReelCard({ isUnmuted, onToggleAudio, reel }: ReelCardProps) {
           }}
         />
 
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_46%,rgba(0,0,0,0.4))]" />
+        <div
+          className={`absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_46%,rgba(0,0,0,0.4))] transition-opacity duration-300 ${
+            playbackState === "ready" ? "opacity-100" : "opacity-40"
+          }`}
+        />
 
         <div
           className={`absolute inset-0 transition-opacity duration-300 ${
             playbackState === "ready" ? "pointer-events-none opacity-0" : "opacity-100"
           }`}
         >
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(0,0,0,0.76)_100%)]" />
-
           {isLoading ? (
-            <div className="absolute inset-0 animate-pulse bg-[linear-gradient(115deg,rgba(255,255,255,0.03)_10%,rgba(255,255,255,0.12)_35%,rgba(255,255,255,0.03)_60%)]" />
+            <div className="absolute inset-0 animate-pulse bg-[linear-gradient(115deg,rgba(255,255,255,0.02)_10%,rgba(255,255,255,0.1)_35%,rgba(255,255,255,0.02)_60%)]" />
           ) : null}
 
           {showError ? (

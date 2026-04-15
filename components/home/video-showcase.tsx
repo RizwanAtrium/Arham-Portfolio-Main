@@ -562,6 +562,7 @@ export function VideoShowcase() {
           const loadState = videoLoadStates[index] ?? "idle";
           const isLoading = hasLoadedSource && loadState !== "ready" && loadState !== "error";
           const showError = loadState === "error";
+          const showPoster = loadState !== "ready";
 
           return (
             <div
@@ -573,6 +574,16 @@ export function VideoShowcase() {
             >
               <article className="video-card relative h-[72svh] min-h-[34rem] w-full overflow-hidden rounded-[1.35rem] border border-white/8 bg-black shadow-[0_18px_80px_rgba(0,0,0,0.5)] md:h-[88vh] md:rounded-[1.6rem]">
                 <div className="video-card-media absolute inset-0">
+                  <img
+                    src={item.poster}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+                      showPoster ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+
                   <video
                     ref={(element) => {
                       videoRefs.current[index] = element;
@@ -610,17 +621,27 @@ export function VideoShowcase() {
                       updateVideoLoadState(index, "error");
                     }}
                   />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.12)_0%,rgba(0,0,0,0.1)_28%,rgba(0,0,0,0.38)_68%,rgba(0,0,0,0.8)_100%)] md:bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.18)_34%,rgba(0,0,0,0.56)_100%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.14),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(167,139,250,0.16),transparent_30%)]" />
+                  <div
+                    className={`absolute inset-0 transition-opacity duration-300 ${
+                      loadState === "ready"
+                        ? "bg-[linear-gradient(180deg,rgba(0,0,0,0.12)_0%,rgba(0,0,0,0.1)_28%,rgba(0,0,0,0.38)_68%,rgba(0,0,0,0.8)_100%)] md:bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.18)_34%,rgba(0,0,0,0.56)_100%)]"
+                        : "bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.08)_34%,rgba(0,0,0,0.24)_100%)] md:bg-[linear-gradient(180deg,rgba(0,0,0,0.03)_0%,rgba(0,0,0,0.1)_38%,rgba(0,0,0,0.28)_100%)]"
+                    }`}
+                  />
+                  <div
+                    className={`absolute inset-0 transition-opacity duration-300 ${
+                      loadState === "ready"
+                        ? "bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.14),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(167,139,250,0.16),transparent_30%)]"
+                        : "bg-transparent"
+                    }`}
+                  />
                   <div
                     className={`absolute inset-0 transition-opacity duration-300 ${
                       loadState === "ready" ? "pointer-events-none opacity-0" : "opacity-100"
                     }`}
                   >
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(0,0,0,0.74)_100%)]" />
-
                     {isLoading ? (
-                      <div className="absolute inset-0 animate-pulse bg-[linear-gradient(115deg,rgba(255,255,255,0.03)_10%,rgba(255,255,255,0.12)_35%,rgba(255,255,255,0.03)_60%)]" />
+                      <div className="absolute inset-0 animate-pulse bg-[linear-gradient(115deg,rgba(255,255,255,0.02)_10%,rgba(255,255,255,0.08)_35%,rgba(255,255,255,0.02)_60%)]" />
                     ) : null}
 
                     {showError ? (
