@@ -3,16 +3,16 @@ import { stat } from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
 
-import { getDriveReelUrl } from "@/lib/drive-media";
+import { getDriveShowcaseUrl } from "@/lib/drive-media";
 
-const REELS_DIR = path.resolve(process.cwd(), "assets", "Reals");
+const VIDEOS_DIR = path.resolve(process.cwd(), "public", "videos");
 
 export const runtime = "nodejs";
 
-function resolveReelPath(fileName: string) {
-  const resolvedPath = path.resolve(REELS_DIR, fileName);
+function resolveVideoPath(fileName: string) {
+  const resolvedPath = path.resolve(VIDEOS_DIR, fileName);
 
-  if (!resolvedPath.startsWith(`${REELS_DIR}${path.sep}`)) {
+  if (!resolvedPath.startsWith(`${VIDEOS_DIR}${path.sep}`)) {
     return null;
   }
 
@@ -25,18 +25,18 @@ export async function GET(
 ) {
   const { file } = await params;
   const fileName = decodeURIComponent(file);
-  const reelPath = resolveReelPath(fileName);
+  const videoPath = resolveVideoPath(fileName);
 
-  if (!reelPath || !fileName.toLowerCase().endsWith(".mp4")) {
+  if (!videoPath || !fileName.toLowerCase().endsWith(".mp4")) {
     return new Response("Not found", { status: 404 });
   }
 
-  let reelStat;
+  let videoStat;
 
   try {
-    reelStat = await stat(reelPath);
+    videoStat = await stat(videoPath);
   } catch {
-    const driveUrl = getDriveReelUrl(fileName);
+    const driveUrl = getDriveShowcaseUrl(fileName);
 
     if (!driveUrl) {
       return new Response("Not found", { status: 404 });
@@ -60,14 +60,14 @@ export async function GET(
     }
 
     const start = Number.parseInt(match[1], 10);
-    const requestedEnd = match[2] ? Number.parseInt(match[2], 10) : reelStat.size - 1;
-    const end = Math.min(requestedEnd, reelStat.size - 1);
+    const requestedEnd = match[2] ? Number.parseInt(match[2], 10) : videoStat.size - 1;
+    const end = Math.min(requestedEnd, videoStat.size - 1);
 
-    if (Number.isNaN(start) || Number.isNaN(end) || start > end || start >= reelStat.size) {
+    if (Number.isNaN(start) || Number.isNaN(end) || start > end || start >= videoStat.size) {
       return new Response("Invalid range", { status: 416 });
     }
 
-    const stream = createReadStream(reelPath, { start, end });
+    const stream = createReadStream(videoPath, { start, end });
 
     return new Response(Readable.toWeb(stream) as ReadableStream, {
       status: 206,
@@ -75,19 +75,19 @@ export async function GET(
         "Accept-Ranges": "bytes",
         "Cache-Control": "public, max-age=3600",
         "Content-Length": String(end - start + 1),
-        "Content-Range": `bytes ${start}-${end}/${reelStat.size}`,
+        "Content-Range": `bytes ${start}-${end}/${videoStat.size}`,
         "Content-Type": "video/mp4",
       },
     });
   }
 
-  const stream = createReadStream(reelPath);
+  const stream = createReadStream(videoPath);
 
   return new Response(Readable.toWeb(stream) as ReadableStream, {
     headers: {
       "Accept-Ranges": "bytes",
       "Cache-Control": "public, max-age=3600",
-      "Content-Length": String(reelStat.size),
+      "Content-Length": String(videoStat.size),
       "Content-Type": "video/mp4",
     },
   });

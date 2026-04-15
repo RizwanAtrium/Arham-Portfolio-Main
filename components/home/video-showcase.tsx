@@ -546,7 +546,7 @@ export function VideoShowcase() {
               </div>
 
               <div className="video-card-content relative z-10 flex h-full flex-col justify-between p-4 md:p-8">
-                <div className="flex flex-wrap items-start justify-between gap-2 md:gap-4">
+                <div className="flex items-start justify-between gap-2 md:gap-4">
                   <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/24 px-3 py-2 backdrop-blur-md md:px-4">
                     <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--color-accent)]">
                       Reel {item.id}
@@ -556,24 +556,20 @@ export function VideoShowcase() {
                       {item.meta}
                     </span>
                   </div>
-
-                  <div className="rounded-full border border-white/10 bg-black/24 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/62 backdrop-blur-md md:px-4">
-                    {activeIndex === index ? "Playing with sound" : "Queued"}
-                  </div>
                 </div>
 
-                <div className="w-full max-w-[520px] self-end rounded-[1.15rem] border border-white/10 bg-black/30 p-4 shadow-[0_14px_50px_rgba(0,0,0,0.22)] backdrop-blur-md md:rounded-[1.35rem] md:p-6">
+                <div className="mb-2 w-full max-w-[520px] self-end rounded-[1.15rem] border border-white/10 bg-black/30 p-4 shadow-[0_14px_50px_rgba(0,0,0,0.22)] backdrop-blur-md md:mb-0 md:rounded-[1.35rem] md:p-6">
                   <div className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/42">
                     {item.tag}
                   </div>
                   <h2 className="mt-3 max-w-[9ch] font-display text-[clamp(1.75rem,8vw,3.8rem)] font-bold uppercase leading-[0.94] tracking-[-0.06em] text-white md:mt-4">
                     {item.title}
                   </h2>
-                  <p className="mt-3 max-w-[34rem] text-sm leading-6 text-white/64 md:mt-4 md:text-base md:leading-7">
+                  <p className="mt-3 hidden max-w-[34rem] text-sm leading-6 text-white/64 md:mt-4 md:block md:text-base md:leading-7">
                     {item.description}
                   </p>
 
-                  <div className="mt-5 flex flex-wrap items-center gap-3">
+                  <div className="mt-5 hidden flex-wrap items-center gap-3 md:flex">
                     <button
                       type="button"
                       onClick={() => {
@@ -606,12 +602,6 @@ export function VideoShowcase() {
                   </div>
                 </div>
               </div>
-
-              {needsGesture && activeIndex === index ? (
-                <div className="pointer-events-none absolute bottom-4 left-4 right-4 z-20 rounded-full border border-white/12 bg-black/55 px-4 py-3 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-white/72 backdrop-blur-md md:bottom-6 md:left-auto md:right-6 md:text-left">
-                  Click once if browser blocks sound
-                </div>
-              ) : null}
             </article>
           </div>
         ))}

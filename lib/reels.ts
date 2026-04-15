@@ -3,6 +3,7 @@ import "server-only";
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 
+import { driveReelFiles } from "@/lib/drive-media";
 import type { FeaturedReelGroup, ReelVideo } from "@/lib/reel-types";
 
 const REELS_DIR = path.join(process.cwd(), "assets", "Reals");
@@ -62,6 +63,16 @@ export async function getAllReels(): Promise<ReelVideo[]> {
   const fileNames = usingAssets
     ? assetFileNames
     : await readReelDirectory(PUBLIC_REELS_DIR);
+
+  if (fileNames.length === 0) {
+    return driveReelFiles.map((entry, index) => ({
+      id: toId(entry.fileName) || `reel-${index + 1}`,
+      title: toDisplayTitle(entry.fileName),
+      src: `/reels/${encodeURIComponent(entry.fileName)}`,
+      posterSrc: posterPool[index % posterPool.length] ?? posterPool[0],
+      fileName: entry.fileName,
+    }));
+  }
 
   return fileNames.map((fileName, index) => ({
     id: toId(fileName) || `reel-${index + 1}`,
